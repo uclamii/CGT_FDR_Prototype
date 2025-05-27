@@ -1,0 +1,130 @@
+CHATBOT COMPARISON ANALYSIS REPORT
+==================================================
+
+Analysis Date: 2025-05-26 22:05:42
+Raw Chatbot Results: /Users/alrahrooh/Documents/CGT_Prototype/CGT_FDR_Prototype/qa_outputs/questions_answers_raw.csv
+RAG Chatbot Results: /Users/alrahrooh/Documents/CGT_Prototype/CGT_FDR_Prototype/qa_outputs/questions_answers_rag.csv
+Total Questions Analyzed: 49
+
+SUMMARY STATISTICS
+--------------------
+
+Semantic Similarity:
+  Raw - Mean: 0.521, Std: 0.153
+  RAG - Mean: 0.588, Std: 0.141
+  Average Improvement: 20.50%
+  Questions with Improvement: 34/49
+
+Answer Length:
+  Raw - Mean: 146.735, Std: 24.056
+  RAG - Mean: 203.878, Std: 43.796
+  Average Improvement: 44.64%
+  Questions with Improvement: 47/49
+
+Flesch Reading Ease:
+  Raw - Mean: 35.898, Std: 14.033
+  RAG - Mean: 30.161, Std: 8.942
+  Average Improvement: -67.74%
+  Questions with Improvement: 17/49
+
+Flesch Kincaid Grade:
+  Raw - Mean: 13.376, Std: 2.577
+  RAG - Mean: 14.053, Std: 1.907
+  Average Improvement: 7.92%
+  Questions with Improvement: 30/49
+
+Sentiment Polarity:
+  Raw - Mean: 0.082, Std: 0.086
+  RAG - Mean: 0.110, Std: 0.066
+  Average Improvement: -37.60%
+  Questions with Improvement: 29/49
+
+Sentiment Subjectivity:
+  Raw - Mean: 0.443, Std: 0.076
+  RAG - Mean: 0.466, Std: 0.075
+  Average Improvement: 8.99%
+  Questions with Improvement: 26/49
+
+STATISTICAL SIGNIFICANCE TESTS
+------------------------------
+
+Semantic Similarity:
+  Paired t-test: t=3.001, p=0.004261
+  Wilcoxon test: W=337.000, p=0.005499
+  Effect size (Cohen's d): 0.455
+  Mean difference: 0.067
+  Significant at α=0.05: Yes
+
+Answer Length:
+  Paired t-test: t=8.970, p=0.000000
+  Wilcoxon test: W=76.000, p=0.000000
+  Effect size (Cohen's d): 1.617
+  Mean difference: 57.143
+  Significant at α=0.05: Yes
+
+Flesch Reading Ease:
+  Paired t-test: t=-2.944, p=0.004985
+  Wilcoxon test: W=324.000, p=0.003558
+  Effect size (Cohen's d): -0.488
+  Mean difference: -5.737
+  Significant at α=0.05: Yes
+
+Flesch Kincaid Grade:
+  Paired t-test: t=1.838, p=0.072207
+  Wilcoxon test: W=420.000, p=0.055648
+  Effect size (Cohen's d): 0.299
+  Mean difference: 0.678
+  Significant at α=0.05: No
+
+Sentiment Polarity:
+  Paired t-test: t=1.698, p=0.096045
+  Wilcoxon test: W=451.000, p=0.109750
+  Effect size (Cohen's d): 0.360
+  Mean difference: 0.027
+  Significant at α=0.05: No
+
+Sentiment Subjectivity:
+  Paired t-test: t=1.416, p=0.163172
+  Wilcoxon test: W=519.000, p=0.358095
+  Effect size (Cohen's d): 0.296
+  Mean difference: 0.022
+  Significant at α=0.05: No
+
+KEY FINDINGS
+------------
+
+Significant Improvements (RAG > Raw):
+  - Semantic Similarity: +0.067
+  - Answer Length: +57.143
+
+Significant Degradations (RAG < Raw):
+  - Flesch Reading Ease: -5.737
+
+ANSWER QUALITY ANALYSIS
+-----------------------
+
+Average Raw Answer Length: 991.7 characters
+Average RAG Answer Length: 1418.4 characters
+Length Improvement: 43.0%
+
+============================================================
+QUICK SUMMARY
+============================================================
+✓ Semantic Similarity: Significant improvement
+✓ Answer Length: Significant improvement
+✗ Flesch Reading Ease: Significant degradation
+
+Total significant improvements: 2
+Total significant degradations: 1
+
+🎉 Overall: RAG approach shows net improvement!
+
+RECOMMENDATIONS
+---------------
+
+✓ RAG approach shows significant improvements in several metrics.
+✓ Consider deploying the RAG-enhanced chatbot for production use.
+⚠ Some metrics show degradation with RAG approach.
+⚠ Investigate and address these issues before deployment.
+
+End of Report

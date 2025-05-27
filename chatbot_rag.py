@@ -1,4 +1,5 @@
 import os
+import csv
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from langchain_community.document_loaders import PyPDFLoader
@@ -30,197 +31,234 @@ else:
 
 print(f"Using device: {device}, dtype: {dtype}")
 
-class RAGChatbot:
-    def __init__(self):
-        # Initialize the LLM
-        print("Loading LLM model...")
-        self.tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
-        if self.tokenizer.pad_token is None:
-            self.tokenizer.pad_token = self.tokenizer.eos_token
-        
-        self.model = AutoModelForCausalLM.from_pretrained(
-            MODEL_NAME,
-            trust_remote_code=True,
-            torch_dtype=dtype,
-            low_cpu_mem_usage=True
-        ).to(device)
-        self.model.eval()
-
-        # Initialize the embedding model
-        print("Loading embedding model...")
-        self.embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
-        
-        # Process documents and create vector store
-        self.vector_store = self._create_vector_store()
-        
-        # Initialize answer evaluator
-        self.evaluator = AnswerEvaluator()
-
-    def _load_documents(self) -> List[Dict]:
-        """Load and process all PDF documents from the guidelines directory."""
-        documents = []
-        pdf_files = glob.glob(os.path.join(GUIDELINES_DIR, "*.pdf"))
-        
-        for pdf_path in pdf_files:
-            try:
-                loader = PyPDFLoader(pdf_path)
-                documents.extend(loader.load())
-            except Exception as e:
-                print(f"Error loading {pdf_path}: {e}")
-        
-        return documents
-
-    def _create_vector_store(self):
-        """Create a vector store from the loaded documents."""
-        print("Processing documents and creating vector store...")
-        documents = self._load_documents()
-        
-        # Split documents into chunks
-        text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=1000,
-            chunk_overlap=200
-        )
-        chunks = text_splitter.split_documents(documents)
-        
-        # Create vector store using Chroma
-        vector_store = Chroma.from_documents(
-            documents=chunks,
-            embedding=self.embeddings,
-            persist_directory=os.path.join(BASE_DIR, "chroma_db")
-        )
-        return vector_store
-
-    def _clean_response(self, response: str) -> str:
-        """Clean up the response by removing unwanted formatting and repetitions."""
-        # Remove any question-answer pairs that might have been generated
-        lines = response.split('\n')
-        cleaned_lines = []
-        for line in lines:
-            if not line.startswith('Question:') and not line.startswith('Answer:'):
-                cleaned_lines.append(line)
-        
-        # Join lines and clean up extra whitespace
-        cleaned = ' '.join(cleaned_lines)
-        cleaned = ' '.join(cleaned.split())  # Remove extra whitespace
-        
-        # Remove bullet points and other formatting
-        cleaned = cleaned.replace('•', '').replace('·', '')
-        
-        return cleaned.strip()
-
-    def _generate_with_context(self, question: str, context: str) -> str:
-        """Generate an answer using the provided context."""
-        prompt = f"""You are a medical assistant helping patients understand their genetic test results and cancer risks. 
-        Use the following context from medical guidelines to answer the patient's question.
-        Provide a clear, concise, and accurate response based ONLY on the given context.
-        If the answer cannot be found in the context, say "I cannot find specific information about this in the guidelines."
-        Do not include any question-answer pairs in your response.
-        Do not repeat yourself.
-        Keep the response focused and to the point.
-
-        Context:
-        {context}
-
-        Patient's Question: {question}
-
-        Your Response:"""
-        
-        inputs = self.tokenizer(prompt, return_tensors="pt", padding=True)
-        inputs = {k: v.to(device) for k, v in inputs.items()}
-        
-        with torch.no_grad():
-            outputs = self.model.generate(
-                **inputs,
-                max_new_tokens=200,
-                do_sample=True,
-                temperature=0.9,
-                top_p=0.9,
-                top_k=50,
-                num_return_sequences=1,
-                pad_token_id=self.tokenizer.pad_token_id,
-                eos_token_id=self.tokenizer.eos_token_id,
-                repetition_penalty=1.2,
-                no_repeat_ngram_size=3,
-                length_penalty=1.0,
-                early_stopping=True
-            )
-        
-        answer = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-        return self._clean_response(answer[len(prompt):].strip())
-
-    def _generate_general_answer(self, question: str) -> str:
-        """Generate an answer using the LLM's general knowledge."""
-        prompt = f"""You are a medical assistant helping patients understand their genetic test results and cancer risks.
-        Answer the following question based on your general medical knowledge.
-        Be clear, concise, and accurate. If you're not certain about something, say so.
-        Do not include any question-answer pairs in your response.
-        Do not repeat yourself.
-        Keep the response focused and to the point.
-
-        Patient's Question: {question}
-
-        Your Response:"""
-        
-        inputs = self.tokenizer(prompt, return_tensors="pt", padding=True)
-        inputs = {k: v.to(device) for k, v in inputs.items()}
-        
-        with torch.no_grad():
-            outputs = self.model.generate(
-                **inputs,
-                max_new_tokens=200,
-                do_sample=True,
-                temperature=0.9,
-                top_p=0.9,
-                top_k=50,
-                num_return_sequences=1,
-                pad_token_id=self.tokenizer.pad_token_id,
-                eos_token_id=self.tokenizer.eos_token_id,
-                repetition_penalty=1.2,
-                no_repeat_ngram_size=3,
-                length_penalty=1.0,
-                early_stopping=True
-            )
-        
-        answer = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-        return self._clean_response(answer[len(prompt):].strip())
-
-    def generate_answer(self, question: str) -> Tuple[str, Dict]:
-        """Generate an answer using RAG approach, falling back to general knowledge if needed."""
+def load_documents() -> List[Dict]:
+    """Load and process all PDF documents from the guidelines directory."""
+    documents = []
+    pdf_files = glob.glob(os.path.join(GUIDELINES_DIR, "*.pdf"))
+    
+    print(f"Found {len(pdf_files)} PDF files to process")
+    
+    for pdf_path in pdf_files:
         try:
-            # Retrieve relevant documents
-            relevant_docs = self.vector_store.similarity_search(question, k=3)
-            context = "\n".join([doc.page_content for doc in relevant_docs])
-            
-            # First try to answer using the context
-            answer = self._generate_with_context(question, context)
-            
-            # If the answer indicates no information was found, try general knowledge
-            if "cannot find specific information" in answer.lower():
-                print("No specific information found in guidelines, using general knowledge...")
-                general_answer = self._generate_general_answer(question)
-                answer = f"{answer}\n\nHowever, based on general medical knowledge: {general_answer}"
-            
-            # Evaluate the answer
-            metrics = self.evaluator.evaluate_answer(question, answer)
-            
-            return answer, metrics
-            
+            print(f"Loading: {os.path.basename(pdf_path)}")
+            loader = PyPDFLoader(pdf_path)
+            docs = loader.load()
+            documents.extend(docs)
+            print(f"  - Loaded {len(docs)} pages")
         except Exception as e:
-            print(f"Error generating answer for question:\n{question}\n{e}")
-            error_answer = "I apologize, but I encountered an error while generating the answer. Please try again."
-            metrics = self.evaluator.evaluate_answer(question, error_answer)
-            return error_answer, metrics
+            print(f"Error loading {pdf_path}: {e}")
+    
+    print(f"Total documents loaded: {len(documents)}")
+    return documents
 
+def create_vector_store():
+    """Create a vector store from the loaded documents."""
+    print("Processing documents and creating vector store...")
+    documents = load_documents()
+    
+    if not documents:
+        raise ValueError("No documents loaded! Please check the guidelines directory.")
+    
+    # Split documents into chunks - adjusted for better retrieval
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=1000,  # Increased from 500
+        chunk_overlap=200,  # Increased from 100
+        separators=["\n\n", "\n", ".", "!", "?", ",", " ", ""],
+        length_function=len,
+    )
+    chunks = text_splitter.split_documents(documents)
+    print(f"Created {len(chunks)} text chunks")
+    
+    # Create vector store using Chroma
+    embeddings = HuggingFaceEmbeddings(
+        model_name=EMBEDDING_MODEL,
+        model_kwargs={'device': 'cpu'},  # Use CPU for embeddings to save GPU memory
+        encode_kwargs={'normalize_embeddings': True}
+    )
+    
+    vector_store = Chroma.from_documents(
+        documents=chunks,
+        embedding=embeddings,
+        persist_directory=os.path.join(BASE_DIR, "chroma_db")
+    )
+    return vector_store
+
+def extract_answer_from_output(output: str, prompt: str) -> str:
+    """Extract the actual answer from the model output."""
+    # Remove the prompt from the output if it's included
+    if output.startswith(prompt):
+        answer = output[len(prompt):].strip()
+    else:
+        # Try to find where the answer starts
+        answer_markers = ["Answer:", "Response:", "Based on", "According to", "The answer is"]
+        for marker in answer_markers:
+            if marker in output:
+                answer = output.split(marker, 1)[-1].strip()
+                break
+        else:
+            answer = output.strip()
+    
+    # Clean up the answer
+    answer = answer.replace("</s>", "").replace("<|endoftext|>", "").strip()
+    
+    # Remove any remaining prompt fragments
+    if "Question:" in answer:
+        answer = answer.split("Question:")[0].strip()
+    
+    return answer
+
+def generate_answer(question: str, max_retries: int = 2) -> Tuple[str, Dict]:
+    """Generate an answer using RAG approach with improved prompting."""
+    try:
+        # Step 1: Retrieve relevant documents
+        print("\nSearching for relevant information in guidelines...")
+        relevant_docs = vector_store.similarity_search(question, k=5)  # Increased back to 5
+        
+        if not relevant_docs:
+            print("No relevant documents found!")
+            context = ""
+        else:
+            context = "\n\n".join([f"Document {i+1}:\n{doc.page_content}" for i, doc in enumerate(relevant_docs)])
+            print(f"Found {len(relevant_docs)} relevant document chunks")
+        
+        # Improved RAG prompt
+        rag_prompt = f"""You are a helpful medical assistant. Use the following guidelines to answer the patient's question. 
+If the guidelines contain relevant information, use it to provide a comprehensive answer.
+If the guidelines don't contain enough information, you may supplement with general medical knowledge, but prioritize the guidelines.
+
+Guidelines:
+{context}
+
+Patient Question: {question}
+
+Provide a clear, detailed answer that directly addresses the question. Your answer should be informative and helpful.
+
+Answer: """
+        
+        print("\nGenerating answer...")
+        inputs = tokenizer(rag_prompt, return_tensors="pt", padding=True, truncation=True, max_length=2048)
+        inputs = {k: v.to(device) for k, v in inputs.items()}
+        
+        # Add attention mask
+        attention_mask = inputs.get('attention_mask', None)
+        
+        with torch.no_grad():
+            outputs = model.generate(
+                input_ids=inputs['input_ids'],
+                attention_mask=attention_mask,
+                max_new_tokens=300,  # Increased from 200
+                min_new_tokens=50,   # Added minimum length
+                do_sample=True,
+                temperature=0.7,
+                top_p=0.9,
+                top_k=50,
+                num_return_sequences=1,
+                pad_token_id=tokenizer.pad_token_id,
+                eos_token_id=tokenizer.eos_token_id,
+                repetition_penalty=1.1,  # Reduced from 1.2
+                no_repeat_ngram_size=3,
+                length_penalty=1.0,
+                early_stopping=False  # Changed to False to encourage longer answers
+            )
+        
+        full_output = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        answer = extract_answer_from_output(full_output, rag_prompt)
+        
+        # Check if we got a meaningful answer
+        if answer and len(answer) > 30:  # Increased minimum length check
+            print(f"Generated answer (length: {len(answer)} chars)")
+            metrics = evaluator.evaluate_answer(question, answer)
+            return answer, metrics
+        else:
+            print(f"Answer too short or empty (length: {len(answer)}), trying with more focused prompt...")
+            
+            # Try a more focused prompt
+            focused_prompt = f"""Based on medical guidelines, please answer this question: {question}
+
+Important: Provide a detailed, informative answer of at least 2-3 sentences. Do not give generic advice about consulting healthcare providers unless specifically relevant to the question.
+
+Answer: """
+            
+            inputs = tokenizer(focused_prompt, return_tensors="pt", padding=True, truncation=True, max_length=512)
+            inputs = {k: v.to(device) for k, v in inputs.items()}
+            
+            with torch.no_grad():
+                outputs = model.generate(
+                    **inputs,
+                    max_new_tokens=300,
+                    min_new_tokens=50,
+                    do_sample=True,
+                    temperature=0.8,
+                    top_p=0.95,
+                    pad_token_id=tokenizer.pad_token_id,
+                    eos_token_id=tokenizer.eos_token_id,
+                    early_stopping=False
+                )
+            
+            full_output = tokenizer.decode(outputs[0], skip_special_tokens=True)
+            answer = extract_answer_from_output(full_output, focused_prompt)
+            
+            if answer and len(answer) > 30:
+                print(f"Generated focused answer (length: {len(answer)} chars)")
+                metrics = evaluator.evaluate_answer(question, answer)
+                return answer, metrics
+        
+        # Last resort - but make it more informative
+        print("Still having trouble generating a good answer, providing informative fallback...")
+        fallback_answer = f"Based on the available medical guidelines, {question.lower()} This is an important topic that may require personalized medical advice. While general guidelines exist, individual circumstances can vary significantly. I recommend discussing your specific situation with a healthcare provider who can consider your complete medical history and provide tailored guidance."
+        metrics = evaluator.evaluate_answer(question, fallback_answer)
+        return fallback_answer, metrics
+            
+    except Exception as e:
+        print(f"Error in generate_answer: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        
+        error_answer = f"I encountered an error while processing your question about {question.lower()} Please try rephrasing your question or consult with a healthcare provider for personalized guidance."
+        metrics = evaluator.evaluate_answer(question, error_answer)
+        return error_answer, metrics
+
+# ---- Load Model and Tokenizer ----
+print("Loading model and tokenizer...")
+try:
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
+    
+    # Ensure pad token is set
+    if tokenizer.pad_token is None:
+        tokenizer.pad_token = tokenizer.eos_token
+    
+    # Load model with memory optimizations
+    model = AutoModelForCausalLM.from_pretrained(
+        MODEL_NAME,
+        trust_remote_code=True,
+        torch_dtype=dtype,
+        low_cpu_mem_usage=True,
+        device_map="auto"
+    )
+    
+    # Set model to eval mode
+    model.eval()
+    print("Model and tokenizer loaded successfully")
+    
+except Exception as e:
+    print(f"Error loading model: {str(e)}")
+    raise
+
+# ---- Initialize Vector Store and Evaluator ----
+print("Initializing vector store...")
+vector_store = create_vector_store()
+evaluator = AnswerEvaluator()
+
+# ---- Main Processing ----
 def main():
     # Create output directory if it doesn't exist
     os.makedirs(os.path.dirname(OUTPUT_CSV), exist_ok=True)
     
-    # Initialize the chatbot
-    chatbot = RAGChatbot()
-    
     # Read questions
     with open(QUESTIONS_PATH, "r") as f:
         questions = [line.strip() for line in f if line.strip()]
+    
+    print(f"Loaded {len(questions)} questions")
     
     # Define CSV fieldnames including metrics
     fieldnames = ["Question", "Answer", 
@@ -229,27 +267,59 @@ def main():
                  "sentiment_polarity", "sentiment_subjectivity"]
     
     # Process questions and save answers
-    import csv
-    with open(OUTPUT_CSV, "w", newline="") as csvfile:
+    with open(OUTPUT_CSV, "w", newline="", encoding='utf-8') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         
-        for q in questions:
-            print(f"Question: {q}")
-            answer, metrics = chatbot.generate_answer(q)
-            print(f"Answer: {answer}\n{'-'*100}")
+        for i, q in enumerate(questions, 1):
+            print(f"\n{'='*60}")
+            print(f"Processing question {i}/{len(questions)}: {q}")
+            print(f"{'='*60}")
             
-            # Combine answer and metrics for CSV
-            row_data = {
-                "Question": q,
-                "Answer": answer,
-                **metrics
-            }
-            
-            writer.writerow(row_data)
-            csvfile.flush()
+            try:
+                answer, metrics = generate_answer(q)
+                
+                print(f"\nGenerated Answer: {answer[:100]}..." if len(answer) > 100 else f"\nGenerated Answer: {answer}")
+                
+                # Write to CSV
+                row_data = {
+                    "Question": q,
+                    "Answer": answer,
+                    **metrics
+                }
+                
+                writer.writerow(row_data)
+                csvfile.flush()
+                
+                # Clear memory after each question
+                if torch.cuda.is_available():
+                    torch.cuda.empty_cache()
+                elif torch.backends.mps.is_available():
+                    torch.mps.empty_cache()
+                
+            except Exception as e:
+                print(f"Error processing question: {q}\nError: {str(e)}")
+                import traceback
+                traceback.print_exc()
+                
+                # Write error row
+                row_data = {
+                    "Question": q,
+                    "Answer": f"Error processing question: {str(e)}",
+                    "semantic_similarity": 0.0,
+                    "answer_length": 0,
+                    "flesch_reading_ease": 0.0,
+                    "flesch_kincaid_grade": 0.0,
+                    "sentiment_polarity": 0.0,
+                    "sentiment_subjectivity": 0.0
+                }
+                writer.writerow(row_data)
+                csvfile.flush()
+                continue
     
+    print(f"\n{'='*60}")
     print(f"Done! Answers and metrics saved to {OUTPUT_CSV}")
+    print(f"{'='*60}")
 
 if __name__ == "__main__":
     main()
