@@ -7,7 +7,7 @@ from answer_evaluator import AnswerEvaluator
 # ---- File Paths ----
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 QUESTIONS_PATH = os.path.join(BASE_DIR, "questions.txt")
-OUTPUT_CSV = os.path.join(BASE_DIR, "qa_outputs/questions_answers_llm.csv")
+OUTPUT_CSV = os.path.join(BASE_DIR, "qa_outputs/questions_answers_raw.csv")
 MODEL_NAME = "microsoft/phi-4"
 
 # ---- Device Setup ----

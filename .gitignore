@@ -57,11 +57,6 @@ transformers/
 *.sqlite
 *.db
 
-# Output files
-qa_outputs/
-*.csv
-!requirements.csv
-
 # Distribution / packaging
 .Python
 env/
