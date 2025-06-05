@@ -1,0 +1,311 @@
+COMPREHENSIVE CGT CHATBOT ANALYSIS WITH BERTSCORE
+============================================================
+
+OVERALL PERFORMANCE ANALYSIS
+------------------------------
+
+Traditional Metrics (RAG vs Raw):
+
+Semantic Similarity:
+  Raw Mean: 0.521
+  RAG Mean: 0.588
+  Improvement: +0.067 (+12.8%)
+  P-value: 0.004261
+  Cohen's d: 0.429
+  Significant: Yes
+
+Answer Length:
+  Raw Mean: 146.735
+  RAG Mean: 203.878
+  Improvement: +57.143 (+38.9%)
+  P-value: 0.000000
+  Cohen's d: 1.281
+  Significant: Yes
+
+Flesch Reading Ease:
+  Raw Mean: 35.898
+  RAG Mean: 30.161
+  Improvement: -5.737 (-16.0%)
+  P-value: 0.004985
+  Cohen's d: -0.421
+  Significant: Yes
+
+Flesch Kincaid Grade:
+  Raw Mean: 13.376
+  RAG Mean: 14.053
+  Improvement: +0.678 (+5.1%)
+  P-value: 0.072207
+  Cohen's d: 0.263
+  Significant: No
+
+Sentiment Polarity:
+  Raw Mean: 0.082
+  RAG Mean: 0.110
+  Improvement: +0.027 (+33.4%)
+  P-value: 0.096045
+  Cohen's d: 0.243
+  Significant: No
+
+Sentiment Subjectivity:
+  Raw Mean: 0.443
+  RAG Mean: 0.466
+  Improvement: +0.022 (+5.1%)
+  P-value: 0.163172
+  Cohen's d: 0.202
+  Significant: No
+
+BERTScore Analysis (RAG vs Raw):
+
+Bertscore Precision:
+  Mean: 0.777
+  Std: 0.034
+  Range: 0.707 - 0.861
+  Valid samples: 49/49
+
+Bertscore Recall:
+  Mean: 0.778
+  Std: 0.040
+  Range: 0.674 - 0.868
+  Valid samples: 49/49
+
+Bertscore F1:
+  Mean: 0.777
+  Std: 0.035
+  Range: 0.693 - 0.857
+  Valid samples: 49/49
+
+============================================================
+
+CATEGORY-SPECIFIC ANALYSIS
+------------------------------
+
+CATEGORY: GENETIC VARIANT INTERPRETATION
+----------------------------------------
+Number of Questions: 5
+
+Traditional Metrics:
+
+Semantic Similarity:
+  Improvement: +15.9%
+  Significant: No
+
+Answer Length:
+  Improvement: +30.8%
+  Significant: Yes
+
+Flesch Reading Ease:
+  Improvement: +1.8%
+  Significant: No
+
+Flesch Kincaid Grade:
+  Improvement: +1.3%
+  Significant: No
+
+Sentiment Polarity:
+  Improvement: +74.2%
+  Significant: No
+
+Sentiment Subjectivity:
+  Improvement: +8.8%
+  Significant: No
+
+BERTScore Metrics:
+
+Bertscore Precision:
+  Mean: 0.784
+  Valid: 5/5
+
+Bertscore Recall:
+  Mean: 0.781
+  Valid: 5/5
+
+Bertscore F1:
+  Mean: 0.782
+  Valid: 5/5
+
+============================================================
+
+CATEGORY: INHERITANCE PATTERNS
+----------------------------------------
+Number of Questions: 7
+
+Traditional Metrics:
+
+Semantic Similarity:
+  Improvement: +14.1%
+  Significant: No
+
+Answer Length:
+  Improvement: +44.4%
+  Significant: Yes
+
+Flesch Reading Ease:
+  Improvement: -22.2%
+  Significant: No
+
+Flesch Kincaid Grade:
+  Improvement: +11.1%
+  Significant: No
+
+Sentiment Polarity:
+  Improvement: +271.4%
+  Significant: Yes
+
+Sentiment Subjectivity:
+  Improvement: +12.1%
+  Significant: No
+
+BERTScore Metrics:
+
+Bertscore Precision:
+  Mean: 0.782
+  Valid: 7/7
+
+Bertscore Recall:
+  Mean: 0.781
+  Valid: 7/7
+
+Bertscore F1:
+  Mean: 0.782
+  Valid: 7/7
+
+============================================================
+
+CATEGORY: FAMILY RISK ASSESSMENT
+----------------------------------------
+Number of Questions: 11
+
+Traditional Metrics:
+
+Semantic Similarity:
+  Improvement: +19.9%
+  Significant: Yes
+
+Answer Length:
+  Improvement: +42.4%
+  Significant: Yes
+
+Flesch Reading Ease:
+  Improvement: -18.5%
+  Significant: No
+
+Flesch Kincaid Grade:
+  Improvement: +7.5%
+  Significant: No
+
+Sentiment Polarity:
+  Improvement: +41.6%
+  Significant: No
+
+Sentiment Subjectivity:
+  Improvement: +6.5%
+  Significant: No
+
+BERTScore Metrics:
+
+Bertscore Precision:
+  Mean: 0.773
+  Valid: 11/11
+
+Bertscore Recall:
+  Mean: 0.764
+  Valid: 11/11
+
+Bertscore F1:
+  Mean: 0.769
+  Valid: 11/11
+
+============================================================
+
+CATEGORY: GENE-SPECIFIC RECOMMENDATIONS
+----------------------------------------
+Number of Questions: 14
+
+Traditional Metrics:
+
+Semantic Similarity:
+  Improvement: -2.7%
+  Significant: No
+
+Answer Length:
+  Improvement: +26.4%
+  Significant: Yes
+
+Flesch Reading Ease:
+  Improvement: -19.8%
+  Significant: No
+
+Flesch Kincaid Grade:
+  Improvement: +3.1%
+  Significant: No
+
+Sentiment Polarity:
+  Improvement: +25.6%
+  Significant: No
+
+Sentiment Subjectivity:
+  Improvement: -3.1%
+  Significant: No
+
+BERTScore Metrics:
+
+Bertscore Precision:
+  Mean: 0.772
+  Valid: 14/14
+
+Bertscore Recall:
+  Mean: 0.780
+  Valid: 14/14
+
+Bertscore F1:
+  Mean: 0.776
+  Valid: 14/14
+
+============================================================
+
+CATEGORY: SUPPORT AND RESOURCES
+----------------------------------------
+Number of Questions: 12
+
+Traditional Metrics:
+
+Semantic Similarity:
+  Improvement: +27.9%
+  Significant: Yes
+
+Answer Length:
+  Improvement: +50.5%
+  Significant: Yes
+
+Flesch Reading Ease:
+  Improvement: -11.3%
+  Significant: No
+
+Flesch Kincaid Grade:
+  Improvement: +3.7%
+  Significant: No
+
+Sentiment Polarity:
+  Improvement: -2.3%
+  Significant: No
+
+Sentiment Subjectivity:
+  Improvement: +7.8%
+  Significant: No
+
+BERTScore Metrics:
+
+Bertscore Precision:
+  Mean: 0.779
+  Valid: 12/12
+
+Bertscore Recall:
+  Mean: 0.784
+  Valid: 12/12
+
+Bertscore F1:
+  Mean: 0.781
+  Valid: 12/12
+
+============================================================
+

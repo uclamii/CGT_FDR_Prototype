@@ -1,0 +1,313 @@
+CGT CHATBOT ANALYSIS BY QUESTION CATEGORY
+==================================================
+
+CATEGORY: GENETIC VARIANT INTERPRETATION
+------------------------------
+Number of Questions: 5
+
+PERFORMANCE METRICS:
+
+Sentiment Polarity:
+  Raw Mean: 0.071
+  RAG Mean: 0.125
+  Improvement: +0.053 (+74.2%)
+  P-value: 0.263912
+  Cohen's d: 0.581
+  Significant: No
+  Questions Improved: 4/5
+
+Answer Length:
+  Raw Mean: 155.000
+  RAG Mean: 202.800
+  Improvement: +47.800 (+30.8%)
+  P-value: 0.028426
+  Cohen's d: 1.501
+  Significant: Yes
+  Questions Improved: 5/5
+
+Semantic Similarity:
+  Raw Mean: 0.521
+  RAG Mean: 0.604
+  Improvement: +0.083 (+15.9%)
+  P-value: 0.292439
+  Cohen's d: 0.542
+  Significant: No
+  Questions Improved: 3/5
+
+Sentiment Subjectivity:
+  Raw Mean: 0.432
+  RAG Mean: 0.470
+  Improvement: +0.038 (+8.8%)
+  P-value: 0.615755
+  Cohen's d: 0.243
+  Significant: No
+  Questions Improved: 2/5
+
+Flesch Reading Ease:
+  Raw Mean: 29.322
+  RAG Mean: 29.856
+  Improvement: +0.534 (+1.8%)
+  P-value: 0.924388
+  Cohen's d: 0.045
+  Significant: No
+  Questions Improved: 1/5
+
+Flesch Kincaid Grade:
+  Raw Mean: 14.120
+  RAG Mean: 14.300
+  Improvement: +0.180 (+1.3%)
+  P-value: 0.882315
+  Cohen's d: 0.071
+  Significant: No
+  Questions Improved: 2/5
+
+==================================================
+
+CATEGORY: INHERITANCE PATTERNS
+------------------------------
+Number of Questions: 7
+
+PERFORMANCE METRICS:
+
+Sentiment Polarity:
+  Raw Mean: 0.024
+  RAG Mean: 0.088
+  Improvement: +0.065 (+271.4%)
+  P-value: 0.036350
+  Cohen's d: 1.014
+  Significant: Yes
+  Questions Improved: 5/7
+
+Answer Length:
+  Raw Mean: 148.429
+  RAG Mean: 214.286
+  Improvement: +65.857 (+44.4%)
+  P-value: 0.005956
+  Cohen's d: 1.572
+  Significant: Yes
+  Questions Improved: 7/7
+
+Semantic Similarity:
+  Raw Mean: 0.497
+  RAG Mean: 0.566
+  Improvement: +0.070 (+14.1%)
+  P-value: 0.216141
+  Cohen's d: 0.522
+  Significant: No
+  Questions Improved: 5/7
+
+Sentiment Subjectivity:
+  Raw Mean: 0.438
+  RAG Mean: 0.492
+  Improvement: +0.053 (+12.1%)
+  P-value: 0.282421
+  Cohen's d: 0.446
+  Significant: No
+  Questions Improved: 4/7
+
+Flesch Kincaid Grade:
+  Raw Mean: 12.700
+  RAG Mean: 14.114
+  Improvement: +1.414 (+11.1%)
+  P-value: 0.208929
+  Cohen's d: 0.532
+  Significant: No
+  Questions Improved: 5/7
+
+Flesch Reading Ease:
+  Raw Mean: 40.884
+  RAG Mean: 31.816
+  Improvement: -9.069 (-22.2%)
+  P-value: 0.160710
+  Cohen's d: -0.605
+  Significant: No
+  Questions Improved: 5/7
+
+==================================================
+
+CATEGORY: FAMILY RISK ASSESSMENT
+------------------------------
+Number of Questions: 11
+
+PERFORMANCE METRICS:
+
+Answer Length:
+  Raw Mean: 150.818
+  RAG Mean: 214.818
+  Improvement: +64.000 (+42.4%)
+  P-value: 0.000031
+  Cohen's d: 2.157
+  Significant: Yes
+  Questions Improved: 11/11
+
+Sentiment Polarity:
+  Raw Mean: 0.089
+  RAG Mean: 0.127
+  Improvement: +0.037 (+41.6%)
+  P-value: 0.198920
+  Cohen's d: 0.415
+  Significant: No
+  Questions Improved: 6/11
+
+Semantic Similarity:
+  Raw Mean: 0.486
+  RAG Mean: 0.583
+  Improvement: +0.097 (+19.9%)
+  P-value: 0.042495
+  Cohen's d: 0.701
+  Significant: Yes
+  Questions Improved: 9/11
+
+Flesch Kincaid Grade:
+  Raw Mean: 12.482
+  RAG Mean: 13.418
+  Improvement: +0.936 (+7.5%)
+  P-value: 0.150443
+  Cohen's d: 0.470
+  Significant: No
+  Questions Improved: 8/11
+
+Sentiment Subjectivity:
+  Raw Mean: 0.473
+  RAG Mean: 0.504
+  Improvement: +0.031 (+6.5%)
+  P-value: 0.421869
+  Cohen's d: 0.253
+  Significant: No
+  Questions Improved: 7/11
+
+Flesch Reading Ease:
+  Raw Mean: 39.719
+  RAG Mean: 32.388
+  Improvement: -7.331 (-18.5%)
+  P-value: 0.061449
+  Cohen's d: -0.635
+  Significant: No
+  Questions Improved: 8/11
+
+==================================================
+
+CATEGORY: GENE-SPECIFIC RECOMMENDATIONS
+------------------------------
+Number of Questions: 14
+
+PERFORMANCE METRICS:
+
+Answer Length:
+  Raw Mean: 142.286
+  RAG Mean: 179.786
+  Improvement: +37.500 (+26.4%)
+  P-value: 0.030268
+  Cohen's d: 0.650
+  Significant: Yes
+  Questions Improved: 12/14
+
+Sentiment Polarity:
+  Raw Mean: 0.071
+  RAG Mean: 0.089
+  Improvement: +0.018 (+25.6%)
+  P-value: 0.702741
+  Cohen's d: 0.104
+  Significant: No
+  Questions Improved: 6/14
+
+Flesch Kincaid Grade:
+  Raw Mean: 14.357
+  RAG Mean: 14.800
+  Improvement: +0.443 (+3.1%)
+  P-value: 0.555784
+  Cohen's d: 0.162
+  Significant: No
+  Questions Improved: 7/14
+
+Semantic Similarity:
+  Raw Mean: 0.612
+  RAG Mean: 0.595
+  Improvement: -0.017 (-2.7%)
+  P-value: 0.720859
+  Cohen's d: -0.098
+  Significant: No
+  Questions Improved: 7/14
+
+Sentiment Subjectivity:
+  Raw Mean: 0.450
+  RAG Mean: 0.437
+  Improvement: -0.014 (-3.1%)
+  P-value: 0.577229
+  Cohen's d: -0.153
+  Significant: No
+  Questions Improved: 6/14
+
+Flesch Reading Ease:
+  Raw Mean: 33.046
+  RAG Mean: 26.506
+  Improvement: -6.539 (-19.8%)
+  P-value: 0.087026
+  Cohen's d: -0.495
+  Significant: No
+  Questions Improved: 10/14
+
+==================================================
+
+CATEGORY: SUPPORT AND RESOURCES
+------------------------------
+Number of Questions: 12
+
+PERFORMANCE METRICS:
+
+Answer Length:
+  Raw Mean: 143.750
+  RAG Mean: 216.333
+  Improvement: +72.583 (+50.5%)
+  P-value: 0.000083
+  Cohen's d: 1.746
+  Significant: Yes
+  Questions Improved: 12/12
+
+Semantic Similarity:
+  Raw Mean: 0.461
+  RAG Mean: 0.590
+  Improvement: +0.129 (+27.9%)
+  P-value: 0.011758
+  Cohen's d: 0.870
+  Significant: Yes
+  Questions Improved: 10/12
+
+Sentiment Subjectivity:
+  Raw Mean: 0.414
+  RAG Mean: 0.447
+  Improvement: +0.032 (+7.8%)
+  P-value: 0.299368
+  Cohen's d: 0.314
+  Significant: No
+  Questions Improved: 7/12
+
+Flesch Kincaid Grade:
+  Raw Mean: 13.133
+  RAG Mean: 13.625
+  Improvement: +0.492 (+3.7%)
+  P-value: 0.595410
+  Cohen's d: 0.158
+  Significant: No
+  Questions Improved: 8/12
+
+Sentiment Polarity:
+  Raw Mean: 0.127
+  RAG Mean: 0.124
+  Improvement: -0.003 (-2.3%)
+  P-value: 0.891815
+  Cohen's d: -0.040
+  Significant: No
+  Questions Improved: 8/12
+
+Flesch Reading Ease:
+  Raw Mean: 35.553
+  RAG Mean: 31.543
+  Improvement: -4.010 (-11.3%)
+  P-value: 0.423676
+  Cohen's d: -0.240
+  Significant: No
+  Questions Improved: 8/12
+
+==================================================
+
