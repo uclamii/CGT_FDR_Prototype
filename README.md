@@ -144,7 +144,6 @@ CGT_FDR_Prototype/
 ├── chatbot_raw.py         # Raw chatbot implementation
 ├── chatbot_rag.py         # RAG chatbot implementation (recommended)
 ├── answer_evaluator.py    # Comprehensive evaluation metrics
-├── regenerate_csvs.py     # Convert existing CSVs to current format
 └── README.md
 ```
 

@@ -1,0 +1,230 @@
+Question,Answer,Category,semantic_similarity,answer_length,word_count,char_count,flesch_reading_ease,flesch_kincaid_grade,sentence_count,avg_sentence_length,sentiment_polarity,sentiment_subjectivity,bertscore_precision,bertscore_recall,bertscore_f1,has_gold_standard
+What does this genetic variant mean for me?,"To address your question about what a genetic variant means for you, we'll need to consider several aspects based on the provided guidelines:
+
+1. Understanding Genetic Variants: A ""variant"" refers to a change or difference in the DNA sequence. Variants can be benign, meaning they do not affect your health, or pathogenic, which might increase the risk of certain diseases.
+
+2. Germline Variant: If your variant is a germlline variant, it means it was inherited from one of your parents and could potentially be passed on to your children. This kind of variant can influence your risk of various conditions depending on its nature and location within your genome.
+
+3. Genetic Testing: To understand the implications of a specific variant, genetic testing would be required. This involves analyzing your blood, urine, or saliva sample to identify any inherited mutations that could lead to health issues such as cancer.
+
+4. Founder Variant: Some variants occur more frequently in particular populations due to shared ancestry. These are known as founder variants. Understanding whether your variant falls into this category can help determine if others in your community might also carry similar risks.
+
+5. Hereditary Cancer Syndromes:
+   - Li-Freumani Syndrome (LIS): Involves a mutation in the TP53 gene, leading to a higher likelihood of developing various cancers like sarcomases, leukemiases, and brain tumors.
+   - If your genetic variant",Genetic Variant Interpretation,0.5984072089195251,225,225,1443,44.14,11.7,16,14.0625,0.12353479853479854,0.4772893772893773,0.6949161887168884,0.854421079158783,0.7664580345153809,True
+Is this variant something I inherited?,"Based on the provided guidelines, the concept of ""variant of uncertain<|repo_name|>TomaszKrawczyk/PracaInzynierska<|file_sep|>/src/main/java/pl/tomek/simulation/model/SimulatedUser.java
+package pl.tomek.simulation.model;
+
+import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import pl.tomaszkrawczykgmail.com.pracainzyniercka.utils.TimeUtils;
+
+/
+  Created by Tomasz Krawczy k on 2017-05-10.
+ /
+public class SimulatedUser {
+
+    private static final Logger logger = LogManager.getLogger(SimulatedUsers.class);
+
+    private String name;
+    private int age;
+    //czas trwania sesji w sekundach
+    private double sessionTime;
+    protected TimeUtils timeUtils;
+    public static final double MAX_TIME = 606024; //sekundy w jednym dniu
+    public double currentTime;
+
+    public SimulatedPerson getSimulatedPerson() {
+        return simulatedPerson;
+    }
+
+    public void setSimulatedUser(Person person) {
+        this.age = person.getAge();
+        this.name = person.getName();
+        if (person instanceof Student){
+            this.sessionTime = ((Student) person).getSessionTime();
+        }else{
+            this.simulatedPerson = null;
+        }
+    }
+
+   private SimulatedActivity currentActivity",Inheritance Patterns,0.09771580994129181,105,105,1220,-46.23,21.6,26,4.038461538461538,0.013888888888888888,0.38935185185185184,0.5440557599067688,0.6592872142791748,0.5961542725563049,True
+Does this mean I will definitely have cancer?,"The guidelines provided do not specifically address whether or not you will definitely develop cancer. They emphasize the importance of knowing the exact type, treatments, and dates for any potential cancers, suggesting these details are crucial for managing existing conditions or understanding risks.
+
+To determine your risk of developing cancer, several factors need to be considered, including family history, lifestyle choices (such as smoking, diet, and exercise), exposure to carcinogens, age, and genetic predispositions. It is important to consult with a healthcare professional who can evaluate your personal risk based on these factors and possibly recommend screenings or preventive measures.
+
+Additionally, if you're concerned about specific symptoms or risk factors, discussing them with a doctor can help in assessing your situation more accurately. They might suggest appropriate tests or monitoring strategies tailored to your individual circumstances.
+
+In summary, while the guidelines stress the significance of detailed cancer-related information for treatment purposes, they do not imply a definitive outcome regarding cancer development. Consulting with a medical expert would provide a more personalized assessment.",Genetic Variant Interpretation,0.413967490196228,172,172,1238,24.27,15.2,8,21.5,0.16944444444444445,0.5032407407407408,0.7251061201095581,0.8336614966392517,0.7756038904190063,True
+Why should I share with family my genetic results?,"Sharing your genetic test results with family members is important for several reasons:
+
+1. Increased Risk Awareness: If your genetic tests reveal specific hereditary conditions or mutations, your biological relatives might also carry these genes. This means they could be at an increased risk of developing similar health issues. By sharing your results, you enable them to become aware of potential risks.
+
+2. Early Detection and Prevention: Knowing one's genetic predisposition allows individuals to take proactive steps in monitoring their health. Early detection through regular screenings can lead to better management and prevention strategies for certain conditions, potentially improving outcomes.
+
+3. Informed Medical Decisions: Family members who have access to your genetic information can discuss it with their doctors or a genetics professional to make informed decisions about their healthcare. This might include undergoing further testing or modifying lifestyle choices to mitigate risks.
+
+4. Eligibility for Clinical Trials: Sharing your genetic results might inform your family members' eligibility for participation in clinical trials focused on conditions related to those genetic markers. This could give them access to new treatments or interventions not yet widely available.
+
+Providers often offer materials and resources designed to help communicate complex genetic information effectively. These resources ensure that your family understands the implications of your results and how they might impact their own health.
+
+Overall, sharing your genetic findings empowers your family to take control of their health by making informed decisions based on a clearer understanding of their genetic risks.",Family Risk Assessment,0.6906259655952454,246,246,1724,26.91,14.2,16,15.375,0.14093860684769777,0.43535895922259554,0.748645007610321,0.8190160989761353,0.7822511196136475,True
+Who are my first-degree relatives?,"Your first-degree blood relatives include your biological parents, full siblings, and biological children. These relationships involve the closest genetic ties, as they share approximately 50% of their DNA with each other. 
+
+- Biological Parents: Your mother and father are considered first-degree because you inherit half of your genetic material from each of them.
+- Full Siblings: Brothers and sisters who share both parents are also first-degree, as you have about 50 percent shared DNA.
+- You also fall under this category when considering your own biological children, who receive roughly half of their genes from you.
+
+Understanding these connections is important for assessing hereditary health risks, as certain genetic conditions can run in families. If there's more specific information or another aspect you'd like to explore regarding family relations, feel free to ask!",Family Risk Assessment,0.6530036330223083,133,133,883,35.68,12.9,7,19.0,0.1713293650793651,0.5337301587301587,0.7874102592468262,0.7866640686988831,0.7870370745658875,True
+Should my family members get tested?,"When considering whether your family members should undergo genetic testing, there are several important factors to consider:
+
+1. Risk of Passing a Variant: If you have a known genetic variant, it can potentially be passed down to your children or siblings. Understanding this risk is crucial in deciding if family members need testing.
+
+2. Impact of Testing for the Family: Genetic testing can have significant implications for family dynamics. It can affect how individuals perceive themselves and others within the family regarding potential health risks.
+
+3. Appropriate Genetic Testing Options: The decision on which tests are suitable depends on your specific and familial medical history. Consulting with a healthcare professional or genetic counselor can help determine the best approach.
+
+4. Technical Accuracy and Interpretation: Different genetic tests vary in their accuracy and what they can reveal. A genetic counselor or specialist can explain these aspects, helping you understand the reliability of the results.
+
+5. Genetic Counseling: This is an essential part of the process. It involves discussing the potential outcomes of the tests, including any necessary lifestyle changes, preventive measures, or further screenings that might reduce risk.
+
+6. Informed Consent: Before proceeding with any genetic test, written informed consent must be obtained. This ensures that everyone involved understands the purpose of the testing, the implications of the findings, the associated risks and benefits, and respects privacy rights.
+
+7. Health Implications for Blood Relatives: If a genetic condition is identified, blood relatives may face similar health risks.",Family Risk Assessment,0.6946873068809509,246,246,1674,36.69,12.5,20,12.3,0.13847222222222225,0.5419444444444443,0.6914522051811218,0.7939962148666382,0.7391848564147949,True
+Which of my relatives are at risk?,"To determine which of your relatives might be at risk for certain conditions, particularly cancer, it's important to consider both genetic predispositions and environmental factors. Here’s a breakdown based on the guidelines provided:
+
+1. Close Blood Relatives: These include your first-degree relatives (parents, siblings, children), second-degree relatives such as grandparents, aunts, uncles, nieces, nephews, and grandchildren, and third-degree relatives like great-grandparents, great-aunts, great-uncles, half-siblings, and first cousins. The health histories of these individuals can give insights into potential hereditary risks.
+
+2. Family Health History: Collecting detailed information about the occurrence of diseases in your family members, especially cancer, is crucial. This includes noting not only if they had cancer but also the type of cancer, age at diagnosis, and outcomes. Certain types of cancers tend to run in families due to inherited gene mutations.
+
+3. Hormonal Factors: Your own reproductive history and hormone exposure can also influence your risk. For example, using birth control, having multiple pregnancies, or undergoing menopausally related hormone therapy could impact your risk profile, and understanding these factors can help assess how your personal health might reflect or differ from familial trends.
+
+When discussing this with a healthcare provider or genetic counselor, ensure you provide them with as much detail as possible regarding your family health background. They may suggest specific tests or screenings based on your unique family situation, helping identify",Family Risk Assessment,0.6937377452850342,226,226,1614,33.75,13.6,13,17.384615384615383,0.13476190476190475,0.6229761904761906,0.7290986180305481,0.8049656748771667,0.765156090259552,True
+Should I contact my male and female relatives?,"Based on the guidelines provided, when assessing cancer risk, it is indeed important to consider close blood relatives from both sides of your immediate family. These relatives include first-degree (parents and siblings), second-degree (aunts, uncles, grandparents, nieces, nephews, and half-siblings), and third-degree relatives (first cousins).
+
+Here’s why contacting both male and females in your family could be beneficial:
+
+1. Comprehensive Family History: Gathering information from all relatives helps create a complete picture of potential hereditary cancer risks. This includes understanding not only if they had cancer, but also the types of cancer diagnosed, the ages at diagnosis (as early-onset can indicate genetic predisposition), and laterality, particularly in paired organs such as breasts or kidneys.
+
+2. Genetic Implications: Some cancers are linked to inherited gene mutations. Knowing whether these cancers occurred in either males or females in the family can help identify patterns or specific genes that might be involved.
+
+3. Cancer Laterality: For cancers affecting paired organs, knowing which side was affected can sometimes give clues about certain syndromes or genetic conditions, further emphasizing the need to collect this data from both genders.
+
+4. Ethnic Background: Ethnicity can influence the likelihood of inheriting specific gene mutations associated with increased cancer risks, so documenting this information alongside familial connections can be valuable for healthcare providers.
+
+In summary, contacting both your male andfemale relatives to gather detailed health history information is",Family Risk Assessment,0.47944387793540955,229,229,1633,22.85,15.8,13,17.615384615384617,0.10935374149659863,0.4884353741496598,0.7146824598312378,0.8365198373794556,0.7708163261413574,True
+Can only women can carry a BRCA inherited mutation?,"No, both men and women can inherit and carry mutations in the BRAC1 and BRCA2 genes. These genetic mutations are associated with an increased risk of developing certain types of cancers, most notably breast and ovarian cancers in women, and prostate and male breast cancers in men. While women who carry these mutations are at a higher risk for breast and particularly ovarian cancer, men with BRCA mutations also face elevated risks for breast cancer (albeit much less common than in women) and prostate cancer. Additionally, both sexes with these mutations might have an increased lifetime risk for other types of cancer as well.
+
+The presence of a BRAC mutation does not affect fertility or reproductive capability; rather, it influences the likelihood of developing specific cancers. If someone has a family history suggestive of hereditary breast and/or ovarian cancer syndrome, it may be advisable for them to discuss genetic counseling and testing with their healthcare provider, regardless of gender, to understand their personal risk better.",Inheritance Patterns,0.6998623609542847,165,165,1050,35.1,15.2,6,27.5,0.12827380952380954,0.3642857142857143,0.7091437578201294,0.8997558951377869,0.7931585907936096,True
+What if a family member doesn't want to get tested?,"When considering whether or not a family should undergo genetic testing, it’s important to respect individual choices while understanding the broader implications for the entire family. Here are some key points:
+
+1. Personal Choice: Each family member has the right to decide whether or how to engage in genetic testing. This decision can be influenced by various factors, including personal beliefs, fear of knowing one's genetic risks, concerns over privacy, or simply not feeling ready for the potential outcomes.
+
+2. Impact on Family: If one family member opts out of testing, this can affect the others' ability to fully assess genetic risks. For instance, without knowing the specific genetic status of one relative, it may be harder to determine accurate risk levels for inherited conditions within the family.
+
+3. Informed Decision-Making: Genetic counseling is recommended to help individuals make informed decisions about testing. Counselors can explain the benefits and limitations of genetic tests, discuss potential outcomes, and address any fears or misconceptions.
+
+4. Family Dynamics: The choice of one family members not to participate in genetic tests can sometimes create tension or concern among those who do wish to know more about their genetic predispositions. Open communication facilitated by a genetic counselor can help manage these dynamics.
+
+5. Alternatives and Support: Even if someone chooses not to undergo genetic tests themselves, they might still benefit from participating in discussions about family history and exploring other ways to monitor health through regular check-ups or non-genetic screenings.
+
+6.",Family Risk Assessment,0.6598150134086609,246,246,1644,31.82,14.4,16,15.375,0.07803571428571429,0.4864056776556776,0.6988930106163025,0.831141471862793,0.7593017816543579,True
+Can I give this to my kids?,"Cancer cannot be directly passed down to your children. This means that having cancer does not mean your children will inherit the disease itself. Additionally, any genetic changes that occur within the tumor cells during the development of cancer also cannot be inherited by your offspring.
+
+However, what can be passed on is a genetic predisposition to certain types of cancer. If there is a hereditary mutation in one of your genes, such as BRCA-1 or BRAF-2, which increases the likelihood of developing cancer, this mutation can indeed be inherited. These mutations are present in the DNA of your egg or sperms cells, meaning they can be transmitted to your child at conception.
+
+For instance, if you carry a mutated version of the BRCA gene, there is an increased risk for your children to develop breast cancer and possibly other types of cancers. It is important to note that inheriting such a gene doesn't guarantee that they will develop cancer; it only indicates a higher risk compared to individuals without these mutations.
+
+If you have concerns about genetic risks being passed to your family, consider consulting with a genetic counselor. They can offer personalized advice, discuss testing options, and help you understand potential implications for your family members.",Inheritance Patterns,0.15040335059165955,208,208,1285,41.9,12.6,10,20.8,0.06999834656084657,0.5685681216931217,0.7066143751144409,0.8038565516471863,0.7521052956581116,True
+How can I get my kids tested?,"To have your children tested for a specific genetic variant, follow these steps:
+
+1. Consult a Genetic Counselor: Start by scheduling an appointment with a certified genetic counselor. They will help assess your family's medical history and determine if genetic testing is appropriate for your children.
+
+2. Understand the Risk: The counselor will explain the likelihood of passing the genetic variant to your children. This understanding is crucial in deciding whether testing is necessary.
+
+3. Choose the Appropriate Test: Based on your family history, the counselor will recommend suitable genetic tests. Common types include:
+   - Carrier Testing: Identifies carriers of genetic mutations without symptoms.
+   - - Prenatal Testing: Conducted during pregnancy to detect variants in the fetus.
+   Newborn Screening: Routine tests performed shortly after birth for certain conditions.
+
+4. Technical Accuracy: Discuss the accuracy and limitations of the recommended tests. Most modern genetic tests have high sensitivity and specificity, but no test is perfect.
+
+5. Impact on Family: Consider how the results might affect your family emotionally and socially. A counselor can guide you through potential outcomes and decisions.
+
+6. Risk-Reduction Strategies: If a variant is detected, the genetic counselor may suggest lifestyle changes or preventive measures to reduce health risks.
+
+7. Enhanced Screening Approaches: Depending on the results, more frequent screenings or monitoring may be advised.
+
+8. Support Groups: Access to support networks can be beneficial for emotional",Family Risk Assessment,0.557799756526947,229,229,1578,40.24,11.1,23,9.956521739130435,0.18845804988662132,0.5168140589569161,0.7237684726715088,0.8104135990142822,0.7646443247795105,True
+At what age should my children get tested?,"If your family has a history of Li-Fraumeni Syndrome (LFS), it is crucial to begin cancer screening measures for your children at an early age due to their increased risk of developing childhood cancers. The guidelines recommend starting these screenings in infancy:
+
+1. Yearly Whole Body MRI: Begin performing yearly whole-body MRIs starting from infancy. This helps in detecting any abnormalities or signs of cancer throughout the entire body.
+
+2. Neurologic Exams: Conduct a complete physical examination, which includes a neurologic exam, every 12 to 24 months. These exams can help identify any neurological issues that might indicate underlying problems.
+
+These screenings are designed to catch potential cancers early when they are most treatable. It is important to discuss with your pediatrician about tailoring these recommendations based on your child’s specific health needs and family history.",Family Risk Assessment,0.5368330478668213,136,136,906,37.3,12.3,9,15.11111111111111,0.09107142857142857,0.4548469387755102,0.7675108313560486,0.783160924911499,0.775256872177124,True
+Can this variant skip a generation?,"The guidelines provided do not specifically address whether a genetic variant associated with cancer predisposition can ""skip"" a generation. However, I can offer some general insights based on typical patterns of inheritance for genetic conditions.
+
+Genetic variants related to cancer predispositions can indeed appear to ""skip generations."" This phenomenon often occurs due to several reasons:
+
+1. Incomplete Penetrance: Not everyone who inherits a cancer-related gene mutation will develop cancer. Incomplete penetrance means that while the genetic variant is present, it does not always lead to disease manifestation. Therefore, an individual might carry the variant without showing symptoms, leading to the appearance of skipping generations when descendants later exhibit the condition.
+
+2. Variable Expressivity: The severity and onset of cancer can vary among individuals carrying the same genetic variant. Some might develop cancer at a younger age, while others might remain unaffected until later in life or never develop cancer despite having the mutation.
+
+3. Recessive vs. Dominant Inheritance: If the genetic condition follows a recessive pattern, both parents must pass on a copy of the mutated gene for their child to be affected. A parent who carries one copy (a carrier) might not show any signs of the disease, which can contribute to the perception of skipped generations.
+
+4. De Novo Mutations: Occasionally, new mutations occur spontaneously in an individual’s germline cells (sperm or egg). These de novo mutations would mean that the variant appears suddenly in a person",Inheritance Patterns,0.5479851961135864,239,239,1594,27.42,14.0,17,14.058823529411764,-0.029237689393939392,0.2776278409090909,0.6660584807395935,0.7569701671600342,0.7086102962493896,True
+Why would my relatives want to know if they have this? What can they do about it?,"Understanding whether your relatives have certain genetic predispositions to diseases like hereditary cancers can be incredibly important for several reasons:
+
+1. Early Detection and Prevention: Knowing if there is a hereditary component to a condition such as breast cancer allows individuals to take proactive measures. For example, regular screenings (such as mammograms or MRIs) starting at an earlier age than the general population can lead to early detection when treatment is often more effective.
+
+2. Risk Management: If a relative knows they carry a gene associated with increased cancer risk (like BRCA1 or BRCA2 mutations), they can discuss risk-reducing strategies with healthcare providers. These might include lifestyle changes, medications, or even preventive surgeries.
+
+3. Informed Family Planning: Understanding one's genetic risks can also inform decisions around having children. Genetic counseling can help assess the likelihood of passing on genetic conditions and explore reproductive options.
+
+4. Personalized Treatment Plans: In cases where cancer does develop, knowing the genetic makeup can guide personalized treatment plans. Certain treatments may be more effective based on specific genetic markers, such as hormone receptor status or HER2.
+
+5. Psychological Preparedness: Awareness and understanding of potential health risks allow individuals to prepare mentally and emotionally, which can reduce anxiety and stress related to uncertainty.
+
+For relatives who discover they are at risk due to genetic factors, steps they can take include:
+
+- Undergoing Genetic Counseling: A genetic counselor can help interpret test results and understand implications",Family Risk Assessment,0.3931143581867218,239,239,1684,24.17,15.3,15,15.933333333333334,0.12214285714285715,0.43479120879120875,0.73112952709198,0.8215108513832092,0.7736895084381104,True
+I don't talk to my family/parents/sister/brother. How can I share this with them?,"I understand that discussing family history might be challenging if communication with family members is difficult or strained. Here are some steps you could consider:
+
+1. Reflect on Your Goals: Before reaching out, clarify why gathering this information is important for you. Understanding its significance in terms of your health can help you approach the conversation more confidently.
+
+2. Choose the Right Medium: If face-to-face conversations feel overwhelming, try alternative methods such as writing an email or letter, sending a text message, or using messaging apps. This allows you time to express yourself clearly without the pressure of immediate responses.
+
+3. Be Direct but Gentle: When initiating contact, explain your intentions calmly and honestly. You might say something like, ""I'm working on understanding my family's health history for personal reasons related to my own health, and I would appreciate any information you might have.""
+
+4. Prepare Specific Questions: Having specific questions ready can make the conversation easier. For example, you might ask about ages at diagnosis for certain conditions or inquire about ancestral origins.
+
+5. Offer Anonymity: Assure them that their information will remain confidential between you and your healthcare provider. This might encourage them to share more freely.
+
+6. Seek Support: Consider asking another relative who has better relations with your parents or siblings to help facilitate the conversation or gather some information for you.
+
+7. Explore Alternative Resources: If direct communication isn’t possible, look into public records, family trees, or DNA",Family Risk Assessment,0.4479861259460449,243,243,1634,36.89,12.4,20,12.15,0.22222222222222227,0.588536155202822,0.7551499605178833,0.7806754112243652,0.7677005529403687,True
+"What are the recommendations for my family members if I have a mutation in (specify gene: MSH2, MSH1, MSH6, PMS2, EPCAM/MSH2, BRCA1, BRCA2)?","Based on your inquiry regarding genetic mutations such as MSH genes (MSH1, MLH1), PMS1, Epcam/MSHC2, and BRCA mutations (BRCA1 and BR CA2), here are tailored recommendations for your family members:
+
+### General Recommendations for Genetic Mutations
+
+1. Family Communication: It’s important for family members to be aware of any genetic mutations within the family, especially those associated with increased cancer risks. Open communication helps ensure that everyone understands their potential risks.
+
+2. Genetic Counseling: Family members should consider meeting with a genetic counselor. A genetic counselor can provide personalized advice based on individual and family medical histories, explain the implications of specific genetic mutations, and discuss testing options.
+
+3. Consider Genetic Testing:
+   - If you have been identified with a mutation such as BRCA, Lynch syndrome-related mutations (like MSH or PMS), or others, it's recommended that first-degree relatives (parents, siblings, children) undergo genetic counseling and possibly genetic testing. 
+   - Testing helps determine if they also carry the same mutation, which could influence their own cancer screening and prevention strategies.
+
+4. Cancer Screening:
+    - BRCA Mutations: Relatives found to carry BRCA gene mutations may need enhanced surveillance for breast, ovary, prostate, and other related cancers. Guidelines often suggest earlier and more frequent screenings.
+    - For Lynch Syndrome-related mutations, individuals may require regular",Gene-Specific Recommendations,0.7094318866729736,211,211,1526,16.73,16.0,13,16.23076923076923,0.08875000000000001,0.5025961538461539,0.7425721287727356,0.7819637656211853,0.7617590427398682,True
+Does this genetic variant affect my cancer treatment?,"Based on the provided guidelines, if you or any of your blood relatives have been confirmed to carry a cancer-caicing gene variant and you have been diagnosed with cancer, undergoing genetic testing is highly recommended. Here’s how this relates to your cancer treatment:
+
+1. Relevance to Treatment Decisions: Genetic testing can provide crucial information that helps healthcare providers tailor your treatment plan. For instance, certain gene variants might influence how well you respond to chemotherapy or whether you might benefit from targeted therapies instead.
+
+2. Personalized Medicine Approach: With knowledge of specific genetic mutations, treatments can be personalized. This means your oncologist can choose therapies that are more likely to be effective for your particular genetic makeup and less likely to cause unnecessary side effects.
+
+3. Family History Considerations: Since you mentioned having a genetic variant, it's also important to consider the impact of any similar conditions within your family. Genetic counseling might be beneficial not only for understanding your own risks but also for informing your relatives who might share these genetic traits.
+
+For further details tailored to your situation, discussing these findings with a genetic counselor or an oncologist would be advisable. They can interpret your test results in the context of current research and recommend appropriate courses of action.",Genetic Variant Interpretation,0.621626615524292,212,212,1434,33.04,13.9,12,17.666666666666668,0.15371428571428572,0.6368214285714285,0.7550331354141235,0.8078696727752686,0.7805582880973816,True
