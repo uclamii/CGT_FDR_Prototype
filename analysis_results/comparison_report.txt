@@ -1,7 +1,7 @@
 CHATBOT COMPARISON ANALYSIS REPORT
 ==================================================
 
-Analysis Date: 2025-05-26 22:05:42
+Analysis Date: 2025-06-05 15:21:01
 Raw Chatbot Results: /Users/alrahrooh/Documents/CGT_Prototype/CGT_FDR_Prototype/qa_outputs/questions_answers_raw.csv
 RAG Chatbot Results: /Users/alrahrooh/Documents/CGT_Prototype/CGT_FDR_Prototype/qa_outputs/questions_answers_rag.csv
 Total Questions Analyzed: 49
@@ -51,44 +51,65 @@ STATISTICAL SIGNIFICANCE TESTS
 Semantic Similarity:
   Paired t-test: t=3.001, p=0.004261
   Wilcoxon test: W=337.000, p=0.005499
-  Effect size (Cohen's d): 0.455
+  Effect size (Cohen's d): 0.429
   Mean difference: 0.067
   Significant at α=0.05: Yes
 
 Answer Length:
   Paired t-test: t=8.970, p=0.000000
   Wilcoxon test: W=76.000, p=0.000000
-  Effect size (Cohen's d): 1.617
+  Effect size (Cohen's d): 1.281
   Mean difference: 57.143
   Significant at α=0.05: Yes
 
 Flesch Reading Ease:
   Paired t-test: t=-2.944, p=0.004985
   Wilcoxon test: W=324.000, p=0.003558
-  Effect size (Cohen's d): -0.488
+  Effect size (Cohen's d): -0.421
   Mean difference: -5.737
   Significant at α=0.05: Yes
 
 Flesch Kincaid Grade:
   Paired t-test: t=1.838, p=0.072207
   Wilcoxon test: W=420.000, p=0.055648
-  Effect size (Cohen's d): 0.299
+  Effect size (Cohen's d): 0.263
   Mean difference: 0.678
   Significant at α=0.05: No
 
 Sentiment Polarity:
   Paired t-test: t=1.698, p=0.096045
   Wilcoxon test: W=451.000, p=0.109750
-  Effect size (Cohen's d): 0.360
+  Effect size (Cohen's d): 0.243
   Mean difference: 0.027
   Significant at α=0.05: No
 
 Sentiment Subjectivity:
   Paired t-test: t=1.416, p=0.163172
   Wilcoxon test: W=519.000, p=0.358095
-  Effect size (Cohen's d): 0.296
+  Effect size (Cohen's d): 0.202
   Mean difference: 0.022
   Significant at α=0.05: No
+
+Bertscore Precision:
+  Paired t-test: t=2.866, p=0.006153
+  Wilcoxon test: W=292.000, p=0.001109
+  Effect size (Cohen's d): 0.409
+  Mean difference: 0.013
+  Significant at α=0.05: Yes
+
+Bertscore Recall:
+  Paired t-test: t=3.306, p=0.001795
+  Wilcoxon test: W=222.000, p=0.000051
+  Effect size (Cohen's d): 0.472
+  Mean difference: 0.017
+  Significant at α=0.05: Yes
+
+Bertscore F1:
+  Paired t-test: t=3.384, p=0.001429
+  Wilcoxon test: W=248.000, p=0.000175
+  Effect size (Cohen's d): 0.483
+  Mean difference: 0.015
+  Significant at α=0.05: Yes
 
 KEY FINDINGS
 ------------
@@ -96,6 +117,9 @@ KEY FINDINGS
 Significant Improvements (RAG > Raw):
   - Semantic Similarity: +0.067
   - Answer Length: +57.143
+  - Bertscore Precision: +0.013
+  - Bertscore Recall: +0.017
+  - Bertscore F1: +0.015
 
 Significant Degradations (RAG < Raw):
   - Flesch Reading Ease: -5.737
@@ -106,18 +130,6 @@ ANSWER QUALITY ANALYSIS
 Average Raw Answer Length: 991.7 characters
 Average RAG Answer Length: 1418.4 characters
 Length Improvement: 43.0%
-
-============================================================
-QUICK SUMMARY
-============================================================
-✓ Semantic Similarity: Significant improvement
-✓ Answer Length: Significant improvement
-✗ Flesch Reading Ease: Significant degradation
-
-Total significant improvements: 2
-Total significant degradations: 1
-
-🎉 Overall: RAG approach shows net improvement!
 
 RECOMMENDATIONS
 ---------------

@@ -8,13 +8,13 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
 from typing import List, Dict, Tuple
 import glob
-from enhanced_answer_evaluator import EnhancedAnswerEvaluator
+from answer_evaluator import AnswerEvaluator
 
 # ---- File Paths ----
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 GUIDELINES_DIR = os.path.join(BASE_DIR, "guidelines")
 QUESTIONS_PATH = os.path.join(BASE_DIR, "questions.txt")
-OUTPUT_CSV = os.path.join(BASE_DIR, "qa_outputs/questions_answers_rag_enhanced.csv")
+OUTPUT_CSV = os.path.join(BASE_DIR, "qa_outputs/questions_answers_rag.csv")
 MODEL_NAME = "microsoft/phi-4"
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 
@@ -30,80 +30,6 @@ else:
     dtype = torch.float32
 
 print(f"Using device: {device}, dtype: {dtype}")
-
-def categorize_questions(questions):
-    """Categorize questions into predefined categories."""
-    QUESTION_CATEGORIES = {
-        "Genetic Variant Interpretation": [
-            "What does this genetic variant mean for me?",
-            "Does this mean I will definitely have cancer?",
-            "Does this genetic variant affect my cancer treatment?",
-            "How might my genetic test results change over time?",
-            "What is Lynch Syndrome?"
-        ],
-        
-        "Inheritance Patterns": [
-            "Is this variant something I inherited?",
-            "Can only women can carry a BRCA inherited mutation?",
-            "Can I give this to my kids?",
-            "Can this variant skip a generation?",
-            "What if I want to have children and have a hereditary cancer gene? What are my reproductive options?",
-            "I have a BRCA pathogenic variant and I want to have children, what are my options?",
-            "Why do some families with Lynch syndrome have more cases of cancer than others?"
-        ],
-        
-        "Family Risk Assessment": [
-            "Why should I share with family my genetic results?",
-            "Who are my first-degree relatives?",
-            "Should my family members get tested?",
-            "Which of my relatives are at risk?",
-            "Should I contact my male and female relatives?",
-            "What if a family member doesn't want to get tested?",
-            "How can I get my kids tested?",
-            "At what age should my children get tested?",
-            "Why would my relatives want to know if they have this? What can they do about it?",
-            "I don't talk to my family/parents/sister/brother. How can I share this with them?",
-            "Who do my family members call to have genetic testing?"
-        ],
-        
-        "Gene-Specific Recommendations": [
-            "What are the recommendations for my family members if I have a mutation in (specify gene: MSH2, MSH1, MSH6, PMS2, EPCAM/MSH2, BRCA1, BRCA2)?",
-            "What types of cancers am I at risk for?",
-            "What screening tests do you recommend?",
-            "What steps can I take to manage my cancer risk if I have Lynch syndrome? (not specific to variant)",
-            "What are the Risks and Benefits of Risk-Reducing Surgeries for Lynch Syndrome?",
-            "What is my cancer risk if I have MSH2 or EPCAM- associated Lynch syndrome?",
-            "What is my cancer risk if I have PMS2 Lynch syndrome?",
-            "What is my cancer risk if I have MSH1 Lynch syndrome?",
-            "What is my cancer risk if I have MSH6 Lynch syndrome?",
-            "What is my cancer risk if I have BRCA2 Hereditary Breast and Ovarian Cancer syndrome?",
-            "What is my cancer risk if I have BRCA1 Hereditary Breast and Ovarian Cancer syndrome?",
-            "What are the surveillance and preventions I can take to reduce my risk of cancer or detecting cancer early if I have a EPCAM/MSH2 mutation?",
-            "What are the surveillance and preventions I can take to reduce my risk of cancer or detecting cancer early if I have an MSH2 mutation?",
-            "What are the surveillance and preventions I can take to reduce my risk of cancer or detecting cancer early if I have a BRCA mutation?"
-        ],
-        
-        "Support and Resources": [
-            "Is genetic testing for my family members covered by insurance?",
-            "Will this affect my health insurance?",
-            "People who test positive for a genetic mutation are they at risk of losing their health insurance?",
-            "Does GINA cover life or disability insurance?",
-            "Will my insurance cover testing for my parents/brother/sister?",
-            "My [relative] doesn't have insurance. What should they do?",
-            "How can I cope with this diagnosis?",
-            "What if I feel overwhelmed?",
-            "Is new research being done on my condition?",
-            "How can I help others with my condition?",
-            "Where can I find a genetic counselor?",
-            "What other resources are available to help me?"
-        ]
-    }
-    
-    question_to_category = {}
-    for category, question_list in QUESTION_CATEGORIES.items():
-        for question in question_list:
-            question_to_category[question] = category
-    return question_to_category
 
 def load_documents() -> List[Dict]:
     """Load and process all PDF documents from the guidelines directory."""
@@ -321,7 +247,7 @@ except Exception as e:
 # ---- Initialize Vector Store and Evaluator ----
 print("Initializing vector store...")
 vector_store = create_vector_store()
-evaluator = EnhancedAnswerEvaluator()
+evaluator = AnswerEvaluator()
 
 # ---- Main Processing ----
 def main():
@@ -334,17 +260,11 @@ def main():
     
     print(f"Loaded {len(questions)} questions")
     
-    # Get question categories
-    question_to_category = categorize_questions(questions)
-    
-    # Define CSV fieldnames including enhanced metrics
-    fieldnames = [
-        "Question", "Answer", "Category",
-        "semantic_similarity", "answer_length", "word_count", "char_count",
-        "flesch_reading_ease", "flesch_kincaid_grade", "sentence_count", "avg_sentence_length",
-        "sentiment_polarity", "sentiment_subjectivity",
-        "bertscore_precision", "bertscore_recall", "bertscore_f1", "has_gold_standard"
-    ]
+    # Define CSV fieldnames including metrics
+    fieldnames = ["Question", "Answer", 
+                 "semantic_similarity", "answer_length", 
+                 "flesch_reading_ease", "flesch_kincaid_grade",
+                 "sentiment_polarity", "sentiment_subjectivity"]
     
     # Process questions and save answers
     with open(OUTPUT_CSV, "w", newline="", encoding='utf-8') as csvfile:
@@ -365,7 +285,6 @@ def main():
                 row_data = {
                     "Question": q,
                     "Answer": answer,
-                    "Category": question_to_category.get(q, "Unknown"),
                     **metrics
                 }
                 
@@ -383,33 +302,24 @@ def main():
                 import traceback
                 traceback.print_exc()
                 
-                # Write error row with default enhanced metrics
+                # Write error row
                 row_data = {
                     "Question": q,
                     "Answer": f"Error processing question: {str(e)}",
-                    "Category": question_to_category.get(q, "Unknown"),
                     "semantic_similarity": 0.0,
                     "answer_length": 0,
-                    "word_count": 0,
-                    "char_count": 0,
                     "flesch_reading_ease": 0.0,
                     "flesch_kincaid_grade": 0.0,
-                    "sentence_count": 0,
-                    "avg_sentence_length": 0,
                     "sentiment_polarity": 0.0,
-                    "sentiment_subjectivity": 0.0,
-                    "bertscore_precision": 0.0,
-                    "bertscore_recall": 0.0,
-                    "bertscore_f1": 0.0,
-                    "has_gold_standard": False
+                    "sentiment_subjectivity": 0.0
                 }
                 writer.writerow(row_data)
                 csvfile.flush()
                 continue
     
     print(f"\n{'='*60}")
-    print(f"Done! Enhanced answers and metrics saved to {OUTPUT_CSV}")
+    print(f"Done! Answers and metrics saved to {OUTPUT_CSV}")
     print(f"{'='*60}")
 
 if __name__ == "__main__":
-    main() 
+    main()

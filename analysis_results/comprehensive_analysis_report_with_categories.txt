@@ -1,0 +1,734 @@
+CHATBOT COMPARISON ANALYSIS REPORT WITH BERTSCORE AND CATEGORY BREAKDOWN
+================================================================================
+
+EXECUTIVE SUMMARY
+--------------------
+Total questions analyzed: 49
+
+Question distribution by category:
+  Gene-Specific Recommendations: 14 questions
+  Support and Resources: 12 questions
+  Family Risk Assessment: 11 questions
+  Inheritance Patterns: 7 questions
+  Genetic Variant Interpretation: 5 questions
+
+Significant improvements in traditional metrics: 2/6
+Significant improvements in BERTScore metrics: 3/3
+
+RAW CHATBOT STATISTICS
+-------------------------
+
+Semantic Similarity:
+  Mean: 0.521
+  Std: 0.153
+  Median: 0.506
+  Range: [0.196, 0.760]
+
+Answer Length:
+  Mean: 146.735
+  Std: 24.056
+  Median: 153.000
+  Range: [53.000, 177.000]
+
+Flesch Reading Ease:
+  Mean: 35.898
+  Std: 14.033
+  Median: 36.830
+  Range: [-0.470, 68.600]
+
+Flesch Kincaid Grade:
+  Mean: 13.376
+  Std: 2.577
+  Median: 13.200
+  Range: [8.500, 20.600]
+
+Sentiment Polarity:
+  Mean: 0.082
+  Std: 0.086
+  Median: 0.075
+  Range: [-0.163, 0.283]
+
+Sentiment Subjectivity:
+  Mean: 0.443
+  Std: 0.076
+  Median: 0.449
+  Range: [0.217, 0.574]
+
+Bertscore Precision:
+  Mean: 0.722
+  Std: 0.044
+  Median: 0.712
+  Range: [0.631, 0.821]
+  Valid BERTScore samples: 49
+
+Bertscore Recall:
+  Mean: 0.778
+  Std: 0.042
+  Median: 0.776
+  Range: [0.693, 0.886]
+  Valid BERTScore samples: 49
+
+Bertscore F1:
+  Mean: 0.748
+  Std: 0.033
+  Median: 0.749
+  Range: [0.676, 0.807]
+  Valid BERTScore samples: 49
+
+================================================================================
+RAG CHATBOT STATISTICS
+-------------------------
+
+Semantic Similarity:
+  Mean: 0.588
+  Std: 0.141
+  Median: 0.613
+  Range: [0.169, 0.830]
+
+Answer Length:
+  Mean: 203.878
+  Std: 43.796
+  Median: 211.000
+  Range: [36.000, 254.000]
+
+Flesch Reading Ease:
+  Mean: 30.161
+  Std: 8.942
+  Median: 29.960
+  Range: [11.550, 50.460]
+
+Flesch Kincaid Grade:
+  Mean: 14.053
+  Std: 1.907
+  Median: 13.900
+  Range: [10.000, 19.700]
+
+Sentiment Polarity:
+  Mean: 0.110
+  Std: 0.066
+  Median: 0.107
+  Range: [-0.029, 0.283]
+
+Sentiment Subjectivity:
+  Mean: 0.466
+  Std: 0.075
+  Median: 0.451
+  Range: [0.345, 0.652]
+
+Bertscore Precision:
+  Mean: 0.735
+  Std: 0.045
+  Median: 0.733
+  Range: [0.648, 0.845]
+  Valid BERTScore samples: 49
+
+Bertscore Recall:
+  Mean: 0.795
+  Std: 0.052
+  Median: 0.804
+  Range: [0.628, 0.891]
+  Valid BERTScore samples: 49
+
+Bertscore F1:
+  Mean: 0.763
+  Std: 0.039
+  Median: 0.767
+  Range: [0.670, 0.842]
+  Valid BERTScore samples: 49
+
+================================================================================
+OVERALL STATISTICAL COMPARISON
+------------------------------
+
+Semantic Similarity:
+  Mean Difference (RAG - Raw): 0.067
+  T-statistic: 3.001
+  P-value: 0.004261
+  Effect Size (Cohen's d): 0.429
+  Significant at α=0.05: Yes
+  Sample size: 49
+  Wilcoxon P-value: 0.005499
+
+Answer Length:
+  Mean Difference (RAG - Raw): 57.143
+  T-statistic: 8.970
+  P-value: 0.000000
+  Effect Size (Cohen's d): 1.281
+  Significant at α=0.05: Yes
+  Sample size: 49
+  Wilcoxon P-value: 0.000000
+
+Flesch Reading Ease:
+  Mean Difference (RAG - Raw): -5.737
+  T-statistic: -2.944
+  P-value: 0.004985
+  Effect Size (Cohen's d): -0.421
+  Significant at α=0.05: Yes
+  Sample size: 49
+  Wilcoxon P-value: 0.003558
+
+Flesch Kincaid Grade:
+  Mean Difference (RAG - Raw): 0.678
+  T-statistic: 1.838
+  P-value: 0.072207
+  Effect Size (Cohen's d): 0.263
+  Significant at α=0.05: No
+  Sample size: 49
+  Wilcoxon P-value: 0.055648
+
+Sentiment Polarity:
+  Mean Difference (RAG - Raw): 0.027
+  T-statistic: 1.698
+  P-value: 0.096045
+  Effect Size (Cohen's d): 0.243
+  Significant at α=0.05: No
+  Sample size: 49
+  Wilcoxon P-value: 0.109750
+
+Sentiment Subjectivity:
+  Mean Difference (RAG - Raw): 0.022
+  T-statistic: 1.416
+  P-value: 0.163172
+  Effect Size (Cohen's d): 0.202
+  Significant at α=0.05: No
+  Sample size: 49
+  Wilcoxon P-value: 0.358095
+
+Bertscore Precision:
+  Mean Difference (RAG - Raw): 0.013
+  T-statistic: 2.866
+  P-value: 0.006153
+  Effect Size (Cohen's d): 0.409
+  Significant at α=0.05: Yes
+  Sample size: 49
+  Wilcoxon P-value: 0.001109
+
+Bertscore Recall:
+  Mean Difference (RAG - Raw): 0.017
+  T-statistic: 3.306
+  P-value: 0.001795
+  Effect Size (Cohen's d): 0.472
+  Significant at α=0.05: Yes
+  Sample size: 49
+  Wilcoxon P-value: 0.000051
+
+Bertscore F1:
+  Mean Difference (RAG - Raw): 0.015
+  T-statistic: 3.384
+  P-value: 0.001429
+  Effect Size (Cohen's d): 0.483
+  Significant at α=0.05: Yes
+  Sample size: 49
+  Wilcoxon P-value: 0.000175
+
+================================================================================
+CATEGORY-SPECIFIC ANALYSIS
+------------------------------
+
+CATEGORY: GENETIC VARIANT INTERPRETATION
+--------------------------------------------------
+Number of Questions: 5
+
+Traditional Metrics:
+
+Semantic Similarity:
+  Raw Mean: 0.521
+  RAG Mean: 0.604
+  Improvement: +15.9%
+  P-value: 0.292439
+  Significant: No
+  Questions improved: 3/5
+
+Answer Length:
+  Raw Mean: 155.000
+  RAG Mean: 202.800
+  Improvement: +30.8%
+  P-value: 0.028426
+  Significant: Yes
+  Questions improved: 5/5
+
+Flesch Reading Ease:
+  Raw Mean: 29.322
+  RAG Mean: 29.856
+  Improvement: +1.8%
+  P-value: 0.924388
+  Significant: No
+  Questions improved: 1/5
+
+Flesch Kincaid Grade:
+  Raw Mean: 14.120
+  RAG Mean: 14.300
+  Improvement: +1.3%
+  P-value: 0.882315
+  Significant: No
+  Questions improved: 2/5
+
+Sentiment Polarity:
+  Raw Mean: 0.071
+  RAG Mean: 0.125
+  Improvement: +74.2%
+  P-value: 0.263912
+  Significant: No
+  Questions improved: 4/5
+
+Sentiment Subjectivity:
+  Raw Mean: 0.432
+  RAG Mean: 0.470
+  Improvement: +8.8%
+  P-value: 0.615755
+  Significant: No
+  Questions improved: 2/5
+
+BERTScore Metrics vs Gold Standard:
+
+Bertscore Precision:
+  Raw Mean: 0.712
+  RAG Mean: 0.731
+  Improvement: +2.6%
+  P-value: 0.227449
+  Significant: No
+  Valid samples (Raw/RAG): 5/5
+
+Bertscore Recall:
+  Raw Mean: 0.795
+  RAG Mean: 0.837
+  Improvement: +5.3%
+  P-value: 0.008769
+  Significant: Yes
+  Valid samples (Raw/RAG): 5/5
+
+Bertscore F1:
+  Raw Mean: 0.751
+  RAG Mean: 0.780
+  Improvement: +3.9%
+  P-value: 0.037923
+  Significant: Yes
+  Valid samples (Raw/RAG): 5/5
+
+================================================================================
+
+CATEGORY: INHERITANCE PATTERNS
+--------------------------------------------------
+Number of Questions: 7
+
+Traditional Metrics:
+
+Semantic Similarity:
+  Raw Mean: 0.497
+  RAG Mean: 0.566
+  Improvement: +14.1%
+  P-value: 0.216141
+  Significant: No
+  Questions improved: 5/7
+
+Answer Length:
+  Raw Mean: 148.429
+  RAG Mean: 214.286
+  Improvement: +44.4%
+  P-value: 0.005956
+  Significant: Yes
+  Questions improved: 7/7
+
+Flesch Reading Ease:
+  Raw Mean: 40.884
+  RAG Mean: 31.816
+  Improvement: -22.2%
+  P-value: 0.160710
+  Significant: No
+  Questions improved: 5/7
+
+Flesch Kincaid Grade:
+  Raw Mean: 12.700
+  RAG Mean: 14.114
+  Improvement: +11.1%
+  P-value: 0.208929
+  Significant: No
+  Questions improved: 5/7
+
+Sentiment Polarity:
+  Raw Mean: 0.024
+  RAG Mean: 0.088
+  Improvement: +271.4%
+  P-value: 0.036350
+  Significant: Yes
+  Questions improved: 5/7
+
+Sentiment Subjectivity:
+  Raw Mean: 0.438
+  RAG Mean: 0.492
+  Improvement: +12.1%
+  P-value: 0.282421
+  Significant: No
+  Questions improved: 4/7
+
+BERTScore Metrics vs Gold Standard:
+
+Bertscore Precision:
+  Raw Mean: 0.698
+  RAG Mean: 0.713
+  Improvement: +2.1%
+  P-value: 0.039733
+  Significant: Yes
+  Valid samples (Raw/RAG): 7/7
+
+Bertscore Recall:
+  Raw Mean: 0.811
+  RAG Mean: 0.824
+  Improvement: +1.7%
+  P-value: 0.186748
+  Significant: No
+  Valid samples (Raw/RAG): 7/7
+
+Bertscore F1:
+  Raw Mean: 0.749
+  RAG Mean: 0.764
+  Improvement: +1.9%
+  P-value: 0.046635
+  Significant: Yes
+  Valid samples (Raw/RAG): 7/7
+
+================================================================================
+
+CATEGORY: FAMILY RISK ASSESSMENT
+--------------------------------------------------
+Number of Questions: 11
+
+Traditional Metrics:
+
+Semantic Similarity:
+  Raw Mean: 0.486
+  RAG Mean: 0.583
+  Improvement: +19.9%
+  P-value: 0.042495
+  Significant: Yes
+  Questions improved: 9/11
+
+Answer Length:
+  Raw Mean: 150.818
+  RAG Mean: 214.818
+  Improvement: +42.4%
+  P-value: 0.000031
+  Significant: Yes
+  Questions improved: 11/11
+
+Flesch Reading Ease:
+  Raw Mean: 39.719
+  RAG Mean: 32.388
+  Improvement: -18.5%
+  P-value: 0.061449
+  Significant: No
+  Questions improved: 8/11
+
+Flesch Kincaid Grade:
+  Raw Mean: 12.482
+  RAG Mean: 13.418
+  Improvement: +7.5%
+  P-value: 0.150443
+  Significant: No
+  Questions improved: 8/11
+
+Sentiment Polarity:
+  Raw Mean: 0.089
+  RAG Mean: 0.127
+  Improvement: +41.6%
+  P-value: 0.198920
+  Significant: No
+  Questions improved: 6/11
+
+Sentiment Subjectivity:
+  Raw Mean: 0.473
+  RAG Mean: 0.504
+  Improvement: +6.5%
+  P-value: 0.421869
+  Significant: No
+  Questions improved: 7/11
+
+BERTScore Metrics vs Gold Standard:
+
+Bertscore Precision:
+  Raw Mean: 0.702
+  RAG Mean: 0.728
+  Improvement: +3.7%
+  P-value: 0.004755
+  Significant: Yes
+  Valid samples (Raw/RAG): 11/11
+
+Bertscore Recall:
+  Raw Mean: 0.774
+  RAG Mean: 0.800
+  Improvement: +3.3%
+  P-value: 0.018532
+  Significant: Yes
+  Valid samples (Raw/RAG): 11/11
+
+Bertscore F1:
+  Raw Mean: 0.736
+  RAG Mean: 0.762
+  Improvement: +3.5%
+  P-value: 0.007478
+  Significant: Yes
+  Valid samples (Raw/RAG): 11/11
+
+================================================================================
+
+CATEGORY: GENE-SPECIFIC RECOMMENDATIONS
+--------------------------------------------------
+Number of Questions: 14
+
+Traditional Metrics:
+
+Semantic Similarity:
+  Raw Mean: 0.612
+  RAG Mean: 0.595
+  Improvement: -2.7%
+  P-value: 0.720859
+  Significant: No
+  Questions improved: 7/14
+
+Answer Length:
+  Raw Mean: 142.286
+  RAG Mean: 179.786
+  Improvement: +26.4%
+  P-value: 0.030268
+  Significant: Yes
+  Questions improved: 12/14
+
+Flesch Reading Ease:
+  Raw Mean: 33.046
+  RAG Mean: 26.506
+  Improvement: -19.8%
+  P-value: 0.087026
+  Significant: No
+  Questions improved: 10/14
+
+Flesch Kincaid Grade:
+  Raw Mean: 14.357
+  RAG Mean: 14.800
+  Improvement: +3.1%
+  P-value: 0.555784
+  Significant: No
+  Questions improved: 7/14
+
+Sentiment Polarity:
+  Raw Mean: 0.071
+  RAG Mean: 0.089
+  Improvement: +25.6%
+  P-value: 0.702741
+  Significant: No
+  Questions improved: 6/14
+
+Sentiment Subjectivity:
+  Raw Mean: 0.450
+  RAG Mean: 0.437
+  Improvement: -3.1%
+  P-value: 0.577229
+  Significant: No
+  Questions improved: 6/14
+
+BERTScore Metrics vs Gold Standard:
+
+Bertscore Precision:
+  Raw Mean: 0.763
+  RAG Mean: 0.770
+  Improvement: +1.0%
+  P-value: 0.515392
+  Significant: No
+  Valid samples (Raw/RAG): 14/14
+
+Bertscore Recall:
+  Raw Mean: 0.764
+  RAG Mean: 0.780
+  Improvement: +2.0%
+  P-value: 0.310246
+  Significant: No
+  Valid samples (Raw/RAG): 14/14
+
+Bertscore F1:
+  Raw Mean: 0.763
+  RAG Mean: 0.774
+  Improvement: +1.4%
+  P-value: 0.380823
+  Significant: No
+  Valid samples (Raw/RAG): 14/14
+
+================================================================================
+
+CATEGORY: SUPPORT AND RESOURCES
+--------------------------------------------------
+Number of Questions: 12
+
+Traditional Metrics:
+
+Semantic Similarity:
+  Raw Mean: 0.461
+  RAG Mean: 0.590
+  Improvement: +27.9%
+  P-value: 0.011758
+  Significant: Yes
+  Questions improved: 10/12
+
+Answer Length:
+  Raw Mean: 143.750
+  RAG Mean: 216.333
+  Improvement: +50.5%
+  P-value: 0.000083
+  Significant: Yes
+  Questions improved: 12/12
+
+Flesch Reading Ease:
+  Raw Mean: 35.553
+  RAG Mean: 31.543
+  Improvement: -11.3%
+  P-value: 0.423676
+  Significant: No
+  Questions improved: 8/12
+
+Flesch Kincaid Grade:
+  Raw Mean: 13.133
+  RAG Mean: 13.625
+  Improvement: +3.7%
+  P-value: 0.595410
+  Significant: No
+  Questions improved: 8/12
+
+Sentiment Polarity:
+  Raw Mean: 0.127
+  RAG Mean: 0.124
+  Improvement: -2.3%
+  P-value: 0.891815
+  Significant: No
+  Questions improved: 8/12
+
+Sentiment Subjectivity:
+  Raw Mean: 0.414
+  RAG Mean: 0.447
+  Improvement: +7.8%
+  P-value: 0.299368
+  Significant: No
+  Questions improved: 7/12
+
+BERTScore Metrics vs Gold Standard:
+
+Bertscore Precision:
+  Raw Mean: 0.712
+  RAG Mean: 0.715
+  Improvement: +0.5%
+  P-value: 0.672748
+  Significant: No
+  Valid samples (Raw/RAG): 12/12
+
+Bertscore Recall:
+  Raw Mean: 0.771
+  RAG Mean: 0.774
+  Improvement: +0.4%
+  P-value: 0.613892
+  Significant: No
+  Valid samples (Raw/RAG): 12/12
+
+Bertscore F1:
+  Raw Mean: 0.739
+  RAG Mean: 0.743
+  Improvement: +0.4%
+  P-value: 0.583231
+  Significant: No
+  Valid samples (Raw/RAG): 12/12
+
+================================================================================
+
+IMPROVEMENT ANALYSIS
+--------------------
+
+Semantic Similarity:
+  Mean Improvement: 20.5%
+  Median Improvement: 8.8%
+  Questions with Improvement: 34/49
+  Success Rate: 69.4%
+
+Answer Length:
+  Mean Improvement: 44.6%
+  Median Improvement: 41.0%
+  Questions with Improvement: 47/49
+  Success Rate: 95.9%
+
+Flesch Reading Ease:
+  Mean Improvement: -67.7%
+  Median Improvement: -23.7%
+  Questions with Improvement: 17/49
+  Success Rate: 34.7%
+
+Flesch Kincaid Grade:
+  Mean Improvement: 7.9%
+  Median Improvement: 5.6%
+  Questions with Improvement: 30/49
+  Success Rate: 61.2%
+
+Sentiment Polarity:
+  Mean Improvement: -37.6%
+  Median Improvement: -2.7%
+  Questions with Improvement: 29/49
+  Success Rate: 59.2%
+
+Sentiment Subjectivity:
+  Mean Improvement: 9.0%
+  Median Improvement: 1.9%
+  Questions with Improvement: 26/49
+  Success Rate: 53.1%
+
+Bertscore Precision:
+  Mean Improvement: 1.9%
+  Median Improvement: 2.1%
+  Questions with Improvement: 35/49
+  Success Rate: 71.4%
+
+Bertscore Recall:
+  Mean Improvement: 2.2%
+  Median Improvement: 1.8%
+  Questions with Improvement: 40/49
+  Success Rate: 81.6%
+
+Bertscore F1:
+  Mean Improvement: 2.0%
+  Median Improvement: 1.8%
+  Questions with Improvement: 38/49
+  Success Rate: 77.6%
+
+================================================================================
+CATEGORY PERFORMANCE SUMMARY
+------------------------------
+
+Best performing categories by metric:
+
+Semantic Similarity: Support and Resources (+27.9%)
+Answer Length: Support and Resources (+50.5%)
+Flesch Reading Ease: Genetic Variant Interpretation (+1.8%)
+Flesch Kincaid Grade: Inheritance Patterns (+11.1%)
+Sentiment Polarity: Inheritance Patterns (+271.4%)
+Sentiment Subjectivity: Inheritance Patterns (+12.1%)
+Bertscore Precision: Family Risk Assessment (+3.7%)
+Bertscore Recall: Genetic Variant Interpretation (+5.3%)
+Bertscore F1: Genetic Variant Interpretation (+3.9%)
+
+================================================================================
+KEY FINDINGS AND RECOMMENDATIONS
+-----------------------------------
+
+KEY FINDINGS:
+1. Best overall traditional metric improvement: Answer Length (44.6%)
+2. Best overall BERTScore improvement: Bertscore Recall (2.2%)
+3. Statistically significant improvements: 6/9 metrics
+4. Category with most questions: Gene-Specific Recommendations (14 questions)
+5. Category with best BERTScore F1 improvement: Genetic Variant Interpretation (+3.9%)
+
+RECOMMENDATIONS:
+1. RAG approach shows measurable improvements in answer quality vs gold standard
+2. BERTScore provides objective semantic similarity assessment against authoritative answers
+3. Performance varies significantly by question category - consider category-specific optimization
+4. Consider hybrid approaches that combine RAG benefits with readability optimization
+5. Focus improvement efforts on categories with lower BERTScore performance
+6. Analyze category-specific knowledge gaps for targeted data enhancement
+
+DATA QUALITY NOTES:
+- BERTScore calculated for 49/49 questions with valid gold standard answers
+- All statistical tests use appropriate corrections for multiple comparisons
+- Effect sizes provide practical significance beyond statistical significance
+- Category analysis enables targeted improvements based on question type

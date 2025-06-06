@@ -1,5 +1,5 @@
-COMPREHENSIVE CGT CHATBOT ANALYSIS WITH BERTSCORE
-============================================================
+COMPREHENSIVE CGT CHATBOT ANALYSIS WITH BERTSCORE VS GOLD STANDARD
+======================================================================
 
 OVERALL PERFORMANCE ANALYSIS
 ------------------------------
@@ -54,27 +54,33 @@ Sentiment Subjectivity:
   Cohen's d: 0.202
   Significant: No
 
-BERTScore Analysis (RAG vs Raw):
+BERTScore Analysis vs Gold Standard:
 
 Bertscore Precision:
-  Mean: 0.777
-  Std: 0.034
-  Range: 0.707 - 0.861
+  Raw Mean: 0.722
+  RAG Mean: 0.735
+  Improvement: +0.013 (+1.8%)
+  P-value: 0.006153
+  Significant: Yes
   Valid samples: 49/49
 
 Bertscore Recall:
-  Mean: 0.778
-  Std: 0.040
-  Range: 0.674 - 0.868
+  Raw Mean: 0.778
+  RAG Mean: 0.795
+  Improvement: +0.017 (+2.2%)
+  P-value: 0.001795
+  Significant: Yes
   Valid samples: 49/49
 
 Bertscore F1:
-  Mean: 0.777
-  Std: 0.035
-  Range: 0.693 - 0.857
+  Raw Mean: 0.748
+  RAG Mean: 0.763
+  Improvement: +0.015 (+2.0%)
+  P-value: 0.001429
+  Significant: Yes
   Valid samples: 49/49
 
-============================================================
+======================================================================
 
 CATEGORY-SPECIFIC ANALYSIS
 ------------------------------
@@ -109,21 +115,27 @@ Sentiment Subjectivity:
   Improvement: +8.8%
   Significant: No
 
-BERTScore Metrics:
+BERTScore Metrics vs Gold Standard:
 
 Bertscore Precision:
-  Mean: 0.784
-  Valid: 5/5
+  Raw Mean: 0.712
+  RAG Mean: 0.731
+  Improvement: +2.6%
+  Significant: No
 
 Bertscore Recall:
-  Mean: 0.781
-  Valid: 5/5
+  Raw Mean: 0.795
+  RAG Mean: 0.837
+  Improvement: +5.3%
+  Significant: Yes
 
 Bertscore F1:
-  Mean: 0.782
-  Valid: 5/5
+  Raw Mean: 0.751
+  RAG Mean: 0.780
+  Improvement: +3.9%
+  Significant: Yes
 
-============================================================
+======================================================================
 
 CATEGORY: INHERITANCE PATTERNS
 ----------------------------------------
@@ -155,21 +167,27 @@ Sentiment Subjectivity:
   Improvement: +12.1%
   Significant: No
 
-BERTScore Metrics:
+BERTScore Metrics vs Gold Standard:
 
 Bertscore Precision:
-  Mean: 0.782
-  Valid: 7/7
+  Raw Mean: 0.698
+  RAG Mean: 0.713
+  Improvement: +2.1%
+  Significant: Yes
 
 Bertscore Recall:
-  Mean: 0.781
-  Valid: 7/7
+  Raw Mean: 0.811
+  RAG Mean: 0.824
+  Improvement: +1.7%
+  Significant: No
 
 Bertscore F1:
-  Mean: 0.782
-  Valid: 7/7
+  Raw Mean: 0.749
+  RAG Mean: 0.764
+  Improvement: +1.9%
+  Significant: Yes
 
-============================================================
+======================================================================
 
 CATEGORY: FAMILY RISK ASSESSMENT
 ----------------------------------------
@@ -201,21 +219,27 @@ Sentiment Subjectivity:
   Improvement: +6.5%
   Significant: No
 
-BERTScore Metrics:
+BERTScore Metrics vs Gold Standard:
 
 Bertscore Precision:
-  Mean: 0.773
-  Valid: 11/11
+  Raw Mean: 0.702
+  RAG Mean: 0.728
+  Improvement: +3.7%
+  Significant: Yes
 
 Bertscore Recall:
-  Mean: 0.764
-  Valid: 11/11
+  Raw Mean: 0.774
+  RAG Mean: 0.800
+  Improvement: +3.3%
+  Significant: Yes
 
 Bertscore F1:
-  Mean: 0.769
-  Valid: 11/11
+  Raw Mean: 0.736
+  RAG Mean: 0.762
+  Improvement: +3.5%
+  Significant: Yes
 
-============================================================
+======================================================================
 
 CATEGORY: GENE-SPECIFIC RECOMMENDATIONS
 ----------------------------------------
@@ -247,21 +271,27 @@ Sentiment Subjectivity:
   Improvement: -3.1%
   Significant: No
 
-BERTScore Metrics:
+BERTScore Metrics vs Gold Standard:
 
 Bertscore Precision:
-  Mean: 0.772
-  Valid: 14/14
+  Raw Mean: 0.763
+  RAG Mean: 0.770
+  Improvement: +1.0%
+  Significant: No
 
 Bertscore Recall:
-  Mean: 0.780
-  Valid: 14/14
+  Raw Mean: 0.764
+  RAG Mean: 0.780
+  Improvement: +2.0%
+  Significant: No
 
 Bertscore F1:
-  Mean: 0.776
-  Valid: 14/14
+  Raw Mean: 0.763
+  RAG Mean: 0.774
+  Improvement: +1.4%
+  Significant: No
 
-============================================================
+======================================================================
 
 CATEGORY: SUPPORT AND RESOURCES
 ----------------------------------------
@@ -293,19 +323,25 @@ Sentiment Subjectivity:
   Improvement: +7.8%
   Significant: No
 
-BERTScore Metrics:
+BERTScore Metrics vs Gold Standard:
 
 Bertscore Precision:
-  Mean: 0.779
-  Valid: 12/12
+  Raw Mean: 0.712
+  RAG Mean: 0.715
+  Improvement: +0.5%
+  Significant: No
 
 Bertscore Recall:
-  Mean: 0.784
-  Valid: 12/12
+  Raw Mean: 0.771
+  RAG Mean: 0.774
+  Improvement: +0.4%
+  Significant: No
 
 Bertscore F1:
-  Mean: 0.781
-  Valid: 12/12
+  Raw Mean: 0.739
+  RAG Mean: 0.743
+  Improvement: +0.4%
+  Significant: No
 
-============================================================
+======================================================================
 
