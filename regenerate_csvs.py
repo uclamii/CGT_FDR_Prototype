@@ -2,76 +2,34 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 import os
-from enhanced_answer_evaluator import EnhancedAnswerEvaluator
+import json
+from answer_evaluator import EnhancedAnswerEvaluator
 import csv
 
+def load_question_categories():
+    """Load question categories from config file."""
+    config_path = Path(__file__).parent / "config" / "question_categories.json"
+    try:
+        with open(config_path, 'r', encoding='utf-8') as f:
+            config = json.load(f)
+            return config['question_categories']
+    except FileNotFoundError:
+        print(f"Warning: Config file not found at {config_path}")
+        print("Using default empty categories.")
+        return {}
+    except json.JSONDecodeError as e:
+        print(f"Error parsing config file: {e}")
+        print("Using default empty categories.")
+        return {}
+    except Exception as e:
+        print(f"Error loading config file: {e}")
+        print("Using default empty categories.")
+        return {}
+
 def categorize_questions(questions):
-    """Categorize questions into predefined categories."""
-    QUESTION_CATEGORIES = {
-        "Genetic Variant Interpretation": [
-            "What does this genetic variant mean for me?",
-            "Does this mean I will definitely have cancer?",
-            "Does this genetic variant affect my cancer treatment?",
-            "How might my genetic test results change over time?",
-            "What is Lynch Syndrome?"
-        ],
-        
-        "Inheritance Patterns": [
-            "Is this variant something I inherited?",
-            "Can only women can carry a BRCA inherited mutation?",
-            "Can I give this to my kids?",
-            "Can this variant skip a generation?",
-            "What if I want to have children and have a hereditary cancer gene? What are my reproductive options?",
-            "I have a BRCA pathogenic variant and I want to have children, what are my options?",
-            "Why do some families with Lynch syndrome have more cases of cancer than others?"
-        ],
-        
-        "Family Risk Assessment": [
-            "Why should I share with family my genetic results?",
-            "Who are my first-degree relatives?",
-            "Should my family members get tested?",
-            "Which of my relatives are at risk?",
-            "Should I contact my male and female relatives?",
-            "What if a family member doesn't want to get tested?",
-            "How can I get my kids tested?",
-            "At what age should my children get tested?",
-            "Why would my relatives want to know if they have this? What can they do about it?",
-            "I don't talk to my family/parents/sister/brother. How can I share this with them?",
-            "Who do my family members call to have genetic testing?"
-        ],
-        
-        "Gene-Specific Recommendations": [
-            "What are the recommendations for my family members if I have a mutation in (specify gene: MSH2, MSH1, MSH6, PMS2, EPCAM/MSH2, BRCA1, BRCA2)?",
-            "What types of cancers am I at risk for?",
-            "What screening tests do you recommend?",
-            "What steps can I take to manage my cancer risk if I have Lynch syndrome? (not specific to variant)",
-            "What are the Risks and Benefits of Risk-Reducing Surgeries for Lynch Syndrome?",
-            "What is my cancer risk if I have MSH2 or EPCAM- associated Lynch syndrome?",
-            "What is my cancer risk if I have PMS2 Lynch syndrome?",
-            "What is my cancer risk if I have MSH1 Lynch syndrome?",
-            "What is my cancer risk if I have MSH6 Lynch syndrome?",
-            "What is my cancer risk if I have BRCA2 Hereditary Breast and Ovarian Cancer syndrome?",
-            "What is my cancer risk if I have BRCA1 Hereditary Breast and Ovarian Cancer syndrome?",
-            "What are the surveillance and preventions I can take to reduce my risk of cancer or detecting cancer early if I have a EPCAM/MSH2 mutation?",
-            "What are the surveillance and preventions I can take to reduce my risk of cancer or detecting cancer early if I have an MSH2 mutation?",
-            "What are the surveillance and preventions I can take to reduce my risk of cancer or detecting cancer early if I have a BRCA mutation?"
-        ],
-        
-        "Support and Resources": [
-            "Is genetic testing for my family members covered by insurance?",
-            "Will this affect my health insurance?",
-            "People who test positive for a genetic mutation are they at risk of losing their health insurance?",
-            "Does GINA cover life or disability insurance?",
-            "Will my insurance cover testing for my parents/brother/sister?",
-            "My [relative] doesn't have insurance. What should they do?",
-            "How can I cope with this diagnosis?",
-            "What if I feel overwhelmed?",
-            "Is new research being done on my condition?",
-            "How can I help others with my condition?",
-            "Where can I find a genetic counselor?",
-            "What other resources are available to help me?"
-        ]
-    }
+    """Categorize questions using config file."""
+    # Load categories from config
+    QUESTION_CATEGORIES = load_question_categories()
     
     question_to_category = {}
     for category, question_list in QUESTION_CATEGORIES.items():

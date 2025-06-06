@@ -1,6 +1,7 @@
 import os
 import csv
 import torch
+import json
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -8,13 +9,19 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
 from typing import List, Dict, Tuple
 import glob
-from enhanced_answer_evaluator import EnhancedAnswerEvaluator
+from answer_evaluator import AnswerEvaluator
+import sys
+
+# Add helper directory to path for imports
+sys.path.append(os.path.join(os.path.dirname(__file__), 'helper'))
+from clean_results import clean_answer_text
 
 # ---- File Paths ----
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 GUIDELINES_DIR = os.path.join(BASE_DIR, "guidelines")
 QUESTIONS_PATH = os.path.join(BASE_DIR, "questions.txt")
-OUTPUT_CSV = os.path.join(BASE_DIR, "qa_outputs/questions_answers_rag_enhanced.csv")
+OUTPUT_CSV = os.path.join(BASE_DIR, "qa_outputs/questions_answers_rag.csv")
+CONFIG_PATH = os.path.join(BASE_DIR, "config", "question_categories.json")
 MODEL_NAME = "microsoft/phi-4"
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 
@@ -31,73 +38,30 @@ else:
 
 print(f"Using device: {device}, dtype: {dtype}")
 
+# ---- Load Configuration ----
+def load_question_categories():
+    """Load question categories from config file."""
+    try:
+        with open(CONFIG_PATH, 'r', encoding='utf-8') as f:
+            config = json.load(f)
+            return config['question_categories']
+    except FileNotFoundError:
+        print(f"Warning: Config file not found at {CONFIG_PATH}")
+        print("Using default empty categories.")
+        return {}
+    except json.JSONDecodeError as e:
+        print(f"Error parsing config file: {e}")
+        print("Using default empty categories.")
+        return {}
+    except Exception as e:
+        print(f"Error loading config file: {e}")
+        print("Using default empty categories.")
+        return {}
+
 def categorize_questions(questions):
-    """Categorize questions into predefined categories."""
-    QUESTION_CATEGORIES = {
-        "Genetic Variant Interpretation": [
-            "What does this genetic variant mean for me?",
-            "Does this mean I will definitely have cancer?",
-            "Does this genetic variant affect my cancer treatment?",
-            "How might my genetic test results change over time?",
-            "What is Lynch Syndrome?"
-        ],
-        
-        "Inheritance Patterns": [
-            "Is this variant something I inherited?",
-            "Can only women can carry a BRCA inherited mutation?",
-            "Can I give this to my kids?",
-            "Can this variant skip a generation?",
-            "What if I want to have children and have a hereditary cancer gene? What are my reproductive options?",
-            "I have a BRCA pathogenic variant and I want to have children, what are my options?",
-            "Why do some families with Lynch syndrome have more cases of cancer than others?"
-        ],
-        
-        "Family Risk Assessment": [
-            "Why should I share with family my genetic results?",
-            "Who are my first-degree relatives?",
-            "Should my family members get tested?",
-            "Which of my relatives are at risk?",
-            "Should I contact my male and female relatives?",
-            "What if a family member doesn't want to get tested?",
-            "How can I get my kids tested?",
-            "At what age should my children get tested?",
-            "Why would my relatives want to know if they have this? What can they do about it?",
-            "I don't talk to my family/parents/sister/brother. How can I share this with them?",
-            "Who do my family members call to have genetic testing?"
-        ],
-        
-        "Gene-Specific Recommendations": [
-            "What are the recommendations for my family members if I have a mutation in (specify gene: MSH2, MSH1, MSH6, PMS2, EPCAM/MSH2, BRCA1, BRCA2)?",
-            "What types of cancers am I at risk for?",
-            "What screening tests do you recommend?",
-            "What steps can I take to manage my cancer risk if I have Lynch syndrome? (not specific to variant)",
-            "What are the Risks and Benefits of Risk-Reducing Surgeries for Lynch Syndrome?",
-            "What is my cancer risk if I have MSH2 or EPCAM- associated Lynch syndrome?",
-            "What is my cancer risk if I have PMS2 Lynch syndrome?",
-            "What is my cancer risk if I have MSH1 Lynch syndrome?",
-            "What is my cancer risk if I have MSH6 Lynch syndrome?",
-            "What is my cancer risk if I have BRCA2 Hereditary Breast and Ovarian Cancer syndrome?",
-            "What is my cancer risk if I have BRCA1 Hereditary Breast and Ovarian Cancer syndrome?",
-            "What are the surveillance and preventions I can take to reduce my risk of cancer or detecting cancer early if I have a EPCAM/MSH2 mutation?",
-            "What are the surveillance and preventions I can take to reduce my risk of cancer or detecting cancer early if I have an MSH2 mutation?",
-            "What are the surveillance and preventions I can take to reduce my risk of cancer or detecting cancer early if I have a BRCA mutation?"
-        ],
-        
-        "Support and Resources": [
-            "Is genetic testing for my family members covered by insurance?",
-            "Will this affect my health insurance?",
-            "People who test positive for a genetic mutation are they at risk of losing their health insurance?",
-            "Does GINA cover life or disability insurance?",
-            "Will my insurance cover testing for my parents/brother/sister?",
-            "My [relative] doesn't have insurance. What should they do?",
-            "How can I cope with this diagnosis?",
-            "What if I feel overwhelmed?",
-            "Is new research being done on my condition?",
-            "How can I help others with my condition?",
-            "Where can I find a genetic counselor?",
-            "What other resources are available to help me?"
-        ]
-    }
+    """Categorize questions using config file."""
+    # Load categories from config
+    QUESTION_CATEGORIES = load_question_categories()
     
     question_to_category = {}
     for category, question_list in QUESTION_CATEGORIES.items():
@@ -241,8 +205,10 @@ Answer: """
         # Check if we got a meaningful answer
         if answer and len(answer) > 30:  # Increased minimum length check
             print(f"Generated answer (length: {len(answer)} chars)")
-            metrics = evaluator.evaluate_answer(question, answer)
-            return answer, metrics
+            # Clean answer before evaluation
+            cleaned_answer = clean_answer_text(answer)
+            metrics = evaluator.evaluate_answer(question, cleaned_answer)
+            return cleaned_answer, metrics
         else:
             print(f"Answer too short or empty (length: {len(answer)}), trying with more focused prompt...")
             
@@ -274,14 +240,18 @@ Answer: """
             
             if answer and len(answer) > 30:
                 print(f"Generated focused answer (length: {len(answer)} chars)")
-                metrics = evaluator.evaluate_answer(question, answer)
-                return answer, metrics
+                # Clean answer before evaluation
+                cleaned_answer = clean_answer_text(answer)
+                metrics = evaluator.evaluate_answer(question, cleaned_answer)
+                return cleaned_answer, metrics
         
         # Last resort - but make it more informative
         print("Still having trouble generating a good answer, providing informative fallback...")
         fallback_answer = f"Based on the available medical guidelines, {question.lower()} This is an important topic that may require personalized medical advice. While general guidelines exist, individual circumstances can vary significantly. I recommend discussing your specific situation with a healthcare provider who can consider your complete medical history and provide tailored guidance."
-        metrics = evaluator.evaluate_answer(question, fallback_answer)
-        return fallback_answer, metrics
+        # Clean fallback answer before evaluation
+        cleaned_fallback = clean_answer_text(fallback_answer)
+        metrics = evaluator.evaluate_answer(question, cleaned_fallback)
+        return cleaned_fallback, metrics
             
     except Exception as e:
         print(f"Error in generate_answer: {str(e)}")
@@ -289,8 +259,10 @@ Answer: """
         traceback.print_exc()
         
         error_answer = f"I encountered an error while processing your question about {question.lower()} Please try rephrasing your question or consult with a healthcare provider for personalized guidance."
-        metrics = evaluator.evaluate_answer(question, error_answer)
-        return error_answer, metrics
+        # Clean error answer before evaluation
+        cleaned_error = clean_answer_text(error_answer)
+        metrics = evaluator.evaluate_answer(question, cleaned_error)
+        return cleaned_error, metrics
 
 # ---- Load Model and Tokenizer ----
 print("Loading model and tokenizer...")
@@ -321,7 +293,7 @@ except Exception as e:
 # ---- Initialize Vector Store and Evaluator ----
 print("Initializing vector store...")
 vector_store = create_vector_store()
-evaluator = EnhancedAnswerEvaluator()
+evaluator = AnswerEvaluator()
 
 # ---- Main Processing ----
 def main():
@@ -337,7 +309,7 @@ def main():
     # Get question categories
     question_to_category = categorize_questions(questions)
     
-    # Define CSV fieldnames including enhanced metrics
+    # Define CSV fieldnames including metrics
     fieldnames = [
         "Question", "Answer", "Category",
         "semantic_similarity", "answer_length", "word_count", "char_count",
@@ -383,7 +355,7 @@ def main():
                 import traceback
                 traceback.print_exc()
                 
-                # Write error row with default enhanced metrics
+                # Write error row with default metrics
                 row_data = {
                     "Question": q,
                     "Answer": f"Error processing question: {str(e)}",
@@ -408,7 +380,7 @@ def main():
                 continue
     
     print(f"\n{'='*60}")
-    print(f"Done! Enhanced answers and metrics saved to {OUTPUT_CSV}")
+    print(f"Done! Answers and metrics saved to {OUTPUT_CSV}")
     print(f"{'='*60}")
 
 if __name__ == "__main__":

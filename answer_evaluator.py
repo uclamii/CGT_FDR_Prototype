@@ -6,8 +6,8 @@ from bert_score import score as bert_score
 import numpy as np
 from pathlib import Path
 
-class EnhancedAnswerEvaluator:
-    """Enhanced evaluator with BERTScore and gold standard comparison."""
+class AnswerEvaluator:
+    """Evaluator with BERTScore and gold standard comparison."""
     
     def __init__(self):
         """Initialize the evaluator with necessary models."""
