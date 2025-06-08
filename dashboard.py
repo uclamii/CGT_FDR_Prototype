@@ -206,54 +206,76 @@ def load_and_process_data():
 
 def calculate_stats(df):
     """Calculate comprehensive statistics including detailed category analysis."""
-    # Focus on most important metrics
-    metrics = ['semantic_similarity', 'flesch_reading_ease']
+    # Include all comprehensive metrics from the analysis
+    metrics = ['semantic_similarity', 'answer_length', 'flesch_reading_ease', 
+              'flesch_kincaid_grade', 'sentiment_polarity', 'sentiment_subjectivity']
     
     results = {}
     
-    # Overall statistics
+    # Overall statistics for all metrics
     for metric in metrics:
-        raw_values = df[f'{metric}_raw'].values
-        rag_values = df[f'{metric}_rag'].values
-        
-        raw_mean = np.mean(raw_values)
-        rag_mean = np.mean(rag_values)
-        improvement_pct = ((rag_mean - raw_mean) / raw_mean) * 100 if raw_mean != 0 else 0
-        
-        t_stat, p_value = stats.ttest_rel(rag_values, raw_values)
-        
-        results[metric] = {
-            'raw_mean': raw_mean,
-            'rag_mean': rag_mean,
-            'improvement_pct': improvement_pct,
-            'p_value': p_value,
-            'significant': p_value < 0.05
-        }
+        if f'{metric}_raw' in df.columns and f'{metric}_rag' in df.columns:
+            raw_values = df[f'{metric}_raw'].values
+            rag_values = df[f'{metric}_rag'].values
+            
+            raw_mean = np.mean(raw_values)
+            rag_mean = np.mean(rag_values)
+            improvement_pct = ((rag_mean - raw_mean) / raw_mean) * 100 if raw_mean != 0 else 0
+            
+            # Statistical test
+            t_stat, p_value = stats.ttest_rel(rag_values, raw_values)
+            
+            # Effect size (Cohen's d)
+            pooled_std = np.sqrt(((len(raw_values)-1)*np.var(raw_values, ddof=1) + 
+                                 (len(rag_values)-1)*np.var(rag_values, ddof=1)) / 
+                                (len(raw_values) + len(rag_values) - 2))
+            cohens_d = (rag_mean - raw_mean) / pooled_std if pooled_std != 0 else 0
+            
+            results[metric] = {
+                'raw_mean': raw_mean,
+                'rag_mean': rag_mean,
+                'improvement_pct': improvement_pct,
+                'p_value': p_value,
+                'significant': p_value < 0.05,
+                'effect_size': cohens_d
+            }
     
-    # BERTScore statistics
-    raw_bert_values = df['bertscore_f1_raw'].dropna().values
-    rag_bert_values = df['bertscore_f1_rag'].dropna().values
+    # BERTScore statistics (precision, recall, F1)
+    bertscore_metrics = ['bertscore_precision', 'bertscore_recall', 'bertscore_f1']
     
-    if len(raw_bert_values) > 0 and len(rag_bert_values) > 0:
-        # Calculate improvement
-        bert_improvement_pct = ((np.mean(rag_bert_values) - np.mean(raw_bert_values)) / np.mean(raw_bert_values)) * 100
+    for bert_metric in bertscore_metrics:
+        raw_bert_values = df[f'{bert_metric}_raw'].dropna().values
+        rag_bert_values = df[f'{bert_metric}_rag'].dropna().values
         
-        # Statistical test
-        if len(raw_bert_values) == len(rag_bert_values):
-            t_stat, p_value = stats.ttest_rel(rag_bert_values, raw_bert_values)
-        else:
-            t_stat, p_value = stats.ttest_ind(rag_bert_values, raw_bert_values)
-        
-        results['bertscore_f1'] = {
-            'raw_mean': np.mean(raw_bert_values),
-            'rag_mean': np.mean(rag_bert_values),
-            'improvement_pct': bert_improvement_pct,
-            'p_value': p_value,
-            'significant': p_value < 0.05,
-            'raw_std': np.std(raw_bert_values),
-            'rag_std': np.std(rag_bert_values),
-            'total_valid': len(raw_bert_values)
-        }
+        if len(raw_bert_values) > 0 and len(rag_bert_values) > 0:
+            # Calculate improvement
+            raw_mean = np.mean(raw_bert_values)
+            rag_mean = np.mean(rag_bert_values)
+            bert_improvement_pct = ((rag_mean - raw_mean) / raw_mean) * 100 if raw_mean != 0 else 0
+            
+            # Statistical test
+            if len(raw_bert_values) == len(rag_bert_values):
+                t_stat, p_value = stats.ttest_rel(rag_bert_values, raw_bert_values)
+            else:
+                t_stat, p_value = stats.ttest_ind(rag_bert_values, raw_bert_values)
+            
+            # Effect size
+            pooled_std = np.sqrt(((len(raw_bert_values)-1)*np.var(raw_bert_values, ddof=1) + 
+                                 (len(rag_bert_values)-1)*np.var(rag_bert_values, ddof=1)) / 
+                                (len(raw_bert_values) + len(rag_bert_values) - 2))
+            cohens_d = (rag_mean - raw_mean) / pooled_std if pooled_std != 0 else 0
+            
+            results[bert_metric] = {
+                'raw_mean': raw_mean,
+                'rag_mean': rag_mean,
+                'improvement_pct': bert_improvement_pct,
+                'p_value': p_value,
+                'significant': p_value < 0.05,
+                'effect_size': cohens_d,
+                'raw_std': np.std(raw_bert_values),
+                'rag_std': np.std(rag_bert_values),
+                'total_valid': len(raw_bert_values)
+            }
     
     # Enhanced category statistics with BERTScore details
     category_results = {}
@@ -309,13 +331,13 @@ def calculate_stats(df):
 def create_enhanced_dashboard(df, overall_stats, category_stats):
     """Create an enhanced dashboard with comprehensive analysis."""
     
-    # Create figure with enhanced layout - 3x2 grid
-    fig = plt.figure(figsize=(20, 15))
-    gs = fig.add_gridspec(3, 2, height_ratios=[1, 1, 1], width_ratios=[1, 1], 
-                         hspace=0.3, wspace=0.25)
+    # Create figure with enhanced layout - 3x2 grid, larger size to prevent overlap
+    fig = plt.figure(figsize=(22, 18))  # Increased from 20x15 to 22x18
+    gs = fig.add_gridspec(3, 2, height_ratios=[1, 1, 1.4], width_ratios=[1, 1], 
+                         hspace=0.3, wspace=0.25)  # Increased bottom section height ratio
     
     fig.suptitle('CGT Chatbot Comprehensive Analysis: RAG vs Raw Performance\nBERTScore vs Gold Standard + Category Breakdown', 
-                 fontsize=20, fontweight='bold', y=0.95)
+                 fontsize=20, fontweight='bold', y=0.96)  # Adjusted y position
     
     # Color scheme - clean and professional
     raw_color = '#E74C3C'  # Red
@@ -477,41 +499,76 @@ def create_enhanced_dashboard(df, overall_stats, category_stats):
     ax5 = fig.add_subplot(gs[2, :])
     ax5.axis('off')
     
-    # Create comprehensive summary table
+    # Create comprehensive summary table with all available metrics
     table_data = [
-        ['Metric', 'Raw Mean', 'RAG Mean', 'Change', 'P-value', 'Significant', 'Effect Size'],
-        ['Semantic Similarity', 
-         f"{overall_stats['semantic_similarity']['raw_mean']:.3f}",
-         f"{overall_stats['semantic_similarity']['rag_mean']:.3f}",
-         f"{overall_stats['semantic_similarity']['improvement_pct']:+.1f}%",
-         f"{overall_stats['semantic_similarity']['p_value']:.4f}",
-         '✓' if overall_stats['semantic_similarity']['significant'] else '✗',
-         'Medium' if abs(overall_stats['semantic_similarity']['improvement_pct']) > 10 else 'Small'],
-        ['Reading Ease',
-         f"{overall_stats['flesch_reading_ease']['raw_mean']:.1f}",
-         f"{overall_stats['flesch_reading_ease']['rag_mean']:.1f}",
-         f"{overall_stats['flesch_reading_ease']['improvement_pct']:+.1f}%",
-         f"{overall_stats['flesch_reading_ease']['p_value']:.4f}",
-         '✓' if overall_stats['flesch_reading_ease']['significant'] else '✗',
-         'Medium' if abs(overall_stats['flesch_reading_ease']['improvement_pct']) > 10 else 'Small'],
+        ['Metric', 'Raw Mean', 'RAG Mean', 'Change', 'P-value', 'Significant', 'Effect Size']
     ]
     
-    # Add BERTScore row
-    if 'bertscore_f1' in overall_stats:
-        table_data.append(['BERTScore F1 vs Gold', 
-                          f"{overall_stats['bertscore_f1']['raw_mean']:.3f}",
-                          f"{overall_stats['bertscore_f1']['rag_mean']:.3f}",
-                          f"{overall_stats['bertscore_f1']['improvement_pct']:+.1f}%",
-                          f"{overall_stats['bertscore_f1']['p_value']:.4f}",
-                          '✓' if overall_stats['bertscore_f1']['significant'] else '✗',
-                          'Large' if abs(overall_stats['bertscore_f1']['improvement_pct']) > 15 else 'Medium'])
+    # Define metric display names
+    metric_display_names = {
+        'semantic_similarity': 'Semantic Similarity',
+        'answer_length': 'Answer Length',
+        'flesch_reading_ease': 'Flesch Reading Ease',
+        'flesch_kincaid_grade': 'Flesch Kincaid Grade',
+        'sentiment_polarity': 'Sentiment Polarity',
+        'sentiment_subjectivity': 'Sentiment Subjectivity',
+        'bertscore_precision': 'BERTScore Precision',
+        'bertscore_recall': 'BERTScore Recall',
+        'bertscore_f1': 'BERTScore F1'
+    }
     
-    # Create table
+    # Helper function to determine effect size category
+    def get_effect_size_label(cohens_d):
+        abs_d = abs(cohens_d)
+        if abs_d >= 0.8:
+            return 'Large'
+        elif abs_d >= 0.5:
+            return 'Medium'
+        elif abs_d >= 0.2:
+            return 'Small'
+        else:
+            return 'Negligible'
+    
+    # Add rows for each metric in overall_stats
+    for metric_key, stats in overall_stats.items():
+        display_name = metric_display_names.get(metric_key, metric_key.replace('_', ' ').title())
+        
+        # Format values based on metric type
+        if 'bertscore' in metric_key or 'semantic' in metric_key or 'sentiment' in metric_key:
+            raw_mean_str = f"{stats['raw_mean']:.3f}"
+            rag_mean_str = f"{stats['rag_mean']:.3f}"
+        elif 'length' in metric_key:
+            raw_mean_str = f"{stats['raw_mean']:.0f}"
+            rag_mean_str = f"{stats['rag_mean']:.0f}"
+        else:  # reading ease, grade
+            raw_mean_str = f"{stats['raw_mean']:.1f}"
+            rag_mean_str = f"{stats['rag_mean']:.1f}"
+        
+        # Format p-value
+        if stats['p_value'] < 0.001:
+            p_value_str = "<0.001"
+        else:
+            p_value_str = f"{stats['p_value']:.3f}"
+        
+        # Effect size
+        effect_size_str = get_effect_size_label(stats.get('effect_size', 0))
+        
+        table_data.append([
+            display_name,
+            raw_mean_str,
+            rag_mean_str,
+            f"{stats['improvement_pct']:+.1f}%",
+            p_value_str,
+            '✓' if stats['significant'] else '✗',
+            effect_size_str
+        ])
+    
+    # Create table with dynamic sizing
     table = ax5.table(cellText=table_data[1:], colLabels=table_data[0], 
                      loc='center', cellLoc='center')
     table.auto_set_font_size(False)
-    table.set_fontsize(11)
-    table.scale(1, 2.2)
+    table.set_fontsize(9)  # Smaller font to fit more rows
+    table.scale(1, 1.8)  # Adjust height scaling
     
     # Style the table
     for i in range(len(table_data[0])):
@@ -529,9 +586,9 @@ def create_enhanced_dashboard(df, overall_stats, category_stats):
             elif j == 5 and table_data[i][j] == '✓':  # Significant column
                 table[(i, j)].set_facecolor('#D5F4E6')  # Light green
     
-    ax5.set_title('Comprehensive Performance Analysis Summary', fontsize=16, fontweight='bold', y=0.9)
+    ax5.set_title('Comprehensive Performance Analysis Summary', fontsize=16, fontweight='bold', y=0.95)
     
-    # Add insights text boxes
+    # Add insights text boxes - moved much lower to avoid table overlap
     best_category = max(category_stats.keys(), key=lambda x: category_stats[x]['bertscore_improvement'])
     worst_category = min(category_stats.keys(), key=lambda x: category_stats[x]['bertscore_improvement'])
     
@@ -542,7 +599,7 @@ def create_enhanced_dashboard(df, overall_stats, category_stats):
 • RAG shows consistent improvements in semantic alignment with gold standard
 • BERTScore provides objective measurement against authoritative medical guidelines"""
     
-    ax5.text(0.02, 0.25, insights_text, transform=ax5.transAxes, fontsize=12,
+    ax5.text(0.02, 0.08, insights_text, transform=ax5.transAxes, fontsize=11,
             verticalalignment='top', bbox=dict(boxstyle='round', facecolor='lightyellow', alpha=0.8))
     
     # Add methodology text
@@ -552,7 +609,7 @@ def create_enhanced_dashboard(df, overall_stats, category_stats):
 • Categories enable targeted analysis of genetic counseling topics
 • RAG approach uses medical guidelines for enhanced accuracy"""
     
-    ax5.text(0.52, 0.25, methodology_text, transform=ax5.transAxes, fontsize=12,
+    ax5.text(0.52, 0.08, methodology_text, transform=ax5.transAxes, fontsize=11,
             verticalalignment='top', bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.8))
     
     plt.tight_layout()
@@ -585,18 +642,38 @@ def main():
     print("\nKey Results:")
     print("=" * 20)
     
-    semantic_improvement = overall_stats['semantic_similarity']['improvement_pct']
-    reading_improvement = overall_stats['flesch_reading_ease']['improvement_pct']
-    bert_improvement = overall_stats['bertscore_f1']['improvement_pct'] if 'bertscore_f1' in overall_stats else 0
+    # Count significant improvements
+    significant_metrics = [metric for metric, stats in overall_stats.items() if stats['significant']]
+    total_metrics = len(overall_stats)
     
-    print(f"✓ Semantic Similarity: {semantic_improvement:+.1f}% change")
-    print(f"✓ Reading Ease: {reading_improvement:+.1f}% change")
-    print(f"✓ BERTScore F1 vs Gold: {bert_improvement:+.1f}% change")
+    # Show top improvements
+    sorted_improvements = sorted(overall_stats.items(), 
+                                key=lambda x: abs(x[1]['improvement_pct']), reverse=True)
+    
+    print(f"✓ Total metrics analyzed: {total_metrics}")
+    print(f"✓ Significant improvements: {len(significant_metrics)}/{total_metrics}")
     print(f"✓ Categories analyzed: {len(category_stats)}")
     print(f"✓ Total questions: {len(df)}")
+    print("\nTop 3 Improvements:")
     
-    print(f"\nDashboard saved to: analysis/dashboard/")
-    print(f"Files: enhanced_cgt_analysis_dashboard.png & .pdf")
+    for i, (metric, stats) in enumerate(sorted_improvements[:3]):
+        display_name = {
+            'semantic_similarity': 'Semantic Similarity',
+            'answer_length': 'Answer Length', 
+            'flesch_reading_ease': 'Reading Ease',
+            'flesch_kincaid_grade': 'Reading Grade',
+            'sentiment_polarity': 'Sentiment Polarity',
+            'sentiment_subjectivity': 'Sentiment Subjectivity',
+            'bertscore_precision': 'BERTScore Precision',
+            'bertscore_recall': 'BERTScore Recall',
+            'bertscore_f1': 'BERTScore F1'
+        }.get(metric, metric.replace('_', ' ').title())
+        
+        significance_marker = " *" if stats['significant'] else ""
+        print(f"  {i+1}. {display_name}: {stats['improvement_pct']:+.1f}%{significance_marker}")
+    
+    print(f"\nDashboard saved to: analysis/")
+    print(f"Files: cgt_analysis_dashboard.png & .pdf")
     
     plt.show()
     return fig
