@@ -558,12 +558,12 @@ def create_enhanced_dashboard(df, overall_stats, category_stats):
     plt.tight_layout()
     
     # Save the enhanced dashboard
-    plots_dir = Path(__file__).parent / "analysis_results" / "dashboard"
+    plots_dir = Path(__file__).parent / "analysis" 
     plots_dir.mkdir(exist_ok=True)
     
-    plt.savefig(plots_dir / "enhanced_cgt_analysis_dashboard.png", 
+    plt.savefig(plots_dir / "cgt_analysis_dashboard.png", 
                 dpi=300, bbox_inches='tight', facecolor='white')
-    plt.savefig(plots_dir / "enhanced_cgt_analysis_dashboard.pdf", 
+    plt.savefig(plots_dir / "cgt_analysis_dashboard.pdf", 
                 bbox_inches='tight', facecolor='white')
     
     return fig
@@ -595,7 +595,7 @@ def main():
     print(f"✓ Categories analyzed: {len(category_stats)}")
     print(f"✓ Total questions: {len(df)}")
     
-    print(f"\nDashboard saved to: analysis_results/dashboard/")
+    print(f"\nDashboard saved to: analysis/dashboard/")
     print(f"Files: enhanced_cgt_analysis_dashboard.png & .pdf")
     
     plt.show()

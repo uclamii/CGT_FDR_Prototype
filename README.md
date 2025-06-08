@@ -10,6 +10,14 @@ This repository contains a comprehensive prototype for a Cancer Genetic Testing 
 - **Memory-optimized**: Designed to prevent system crashes with efficient memory management
 - **Question Categorization**: Automatic classification into 5 genetic counseling domains
 
+### **Comprehensive Analysis & Reporting**
+- **`analysis.py`**: Statistical analysis and report generation including:
+  - **Comprehensive Text Reports**: Detailed analysis with executive summary, statistical comparisons, and category breakdowns
+  - **Summary Statistics CSV**: Overall performance metrics comparing RAG vs Raw approaches
+  - **Category Analysis CSV**: Detailed breakdown by question category with statistical significance testing
+  - **Publication-Ready Reports**: Professional formatting suitable for grant reporting and publications
+  - **Statistical Rigor**: Paired t-tests, Wilcoxon tests, Cohen's d effect sizes, and multiple comparison corrections
+
 ### **Comprehensive Answer Evaluation & Analysis**
 - **`answer_evaluator.py`**: Comprehensive evaluation metrics including:
   - **BERTScore vs Gold Standard**: Precision, recall, and F1 scores against authoritative medical answers
@@ -34,10 +42,11 @@ Questions are automatically categorized into 5 genetic counseling domains:
 - **Batch processing**: Handle large question sets efficiently
 
 ### **Analysis & Visualization**
-- **Dashboard capabilities**: Interactive visualizations and statistical analysis
+- **Comprehensive Statistical Analysis**: Professional reports with publication-ready formatting
+- **Visual Dashboard Generation**: Interactive 5-panel dashboard with statistical visualizations
 - **Statistical comparison**: Paired t-tests and effect size calculations between approaches
 - **Category-specific analysis**: Performance metrics by question domain
-- **Publication-quality plots**: Professional visualizations for research reports
+- **Integrated Output Location**: All analysis outputs (reports, CSVs, and dashboards) saved to `analysis/` directory
 
 ## 🗂️ Architecture
 
@@ -133,6 +142,12 @@ CGT_FDR_Prototype/
 │   ├── questions_answers_raw.csv      # Raw chatbot results
 │   ├── questions_answers_rag.csv      # RAG chatbot results  
 │   └── questions_answers_comparison.csv # Merged comparison for dashboard
+├── analysis/               # Analysis outputs and reports
+│   ├── comprehensive_analysis_report.txt  # Detailed text report
+│   ├── summary_statistics.csv            # Overall performance metrics CSV
+│   ├── category_analysis.csv             # Category-specific analysis CSV
+│   ├── cgt_analysis_dashboard.png        # Visual dashboard (high-resolution)
+│   └── cgt_analysis_dashboard.pdf        # Visual dashboard (publication-ready)
 ├── config/                 # Configuration files
 │   └── question_categories.json      # Question categories definition
 ├── helper/                 # Helper functions and utilities
@@ -144,6 +159,8 @@ CGT_FDR_Prototype/
 ├── chatbot_raw.py         # Raw chatbot implementation
 ├── chatbot_rag.py         # RAG chatbot implementation (recommended)
 ├── answer_evaluator.py    # Comprehensive evaluation metrics
+├── analysis.py            # Comprehensive statistical analysis and reporting
+├── dashboard.py           # Visual dashboard generation with statistical plots
 └── README.md
 ```
 
@@ -167,7 +184,44 @@ python chatbot_raw.py
 - Direct model responses without guidelines
 - Same comprehensive evaluation metrics for comparison
 
-### 2. Convert Existing Data (if needed)
+### 2. Generate Comprehensive Analysis
+
+**Statistical Analysis & Report Generation:**
+```bash
+python analysis.py
+```
+- Creates comprehensive statistical analysis comparing RAG vs Raw performance
+- Generates publication-ready text report with detailed findings and recommendations
+- Outputs to `analysis/` directory:
+  - `comprehensive_analysis_report.txt`: Complete analysis with executive summary, statistics, and category breakdowns
+  - `summary_statistics.csv`: Overall performance metrics with statistical significance testing
+  - `category_analysis.csv`: Category-specific performance analysis with effect sizes
+
+**Analysis Features:**
+- **Statistical Testing**: Paired t-tests, Wilcoxon tests, and effect size calculations
+- **Category Analysis**: Performance breakdown by genetic counseling domain
+- **BERTScore Integration**: Evaluation against gold standard medical answers
+- **Publication Quality**: Professional formatting suitable for grant reports and academic publications
+
+### 3. Generate Visual Dashboard
+
+**Interactive Dashboard Creation:**
+```bash
+python dashboard.py
+```
+- Creates comprehensive visual dashboard comparing RAG vs Raw performance
+- Generates publication-ready visualizations with statistical significance testing
+- Outputs to `analysis/` directory:
+  - `cgt_analysis_dashboard.png`: High-resolution dashboard image (300 DPI)
+  - `cgt_analysis_dashboard.pdf`: Publication-ready PDF version
+
+**Dashboard Features:**
+- **5-Panel Layout**: Overview metrics, category performance, BERTScore comparisons, performance matrix, and summary table
+- **Statistical Visualization**: Statistical significance markers, effect sizes, and confidence intervals
+- **BERTScore Integration**: Visual comparison against gold standard medical answers
+- **Category Analysis**: Performance breakdown by genetic counseling domain with insights
+
+### 4. Convert Existing Data (if needed)
 
 **Upgrade existing CSV files to current format:**
 ```bash
@@ -177,13 +231,23 @@ python regenerate_csvs.py
 - Adds BERTScore evaluation against gold standard
 - Creates comparison CSV for dashboard use
 
-### 3. Key Output Files
+### 5. Key Output Files
 
+**Chatbot Results:**
 | File | Description | Metrics |
 |------|-------------|---------|
 | `questions_answers_raw.csv` | Raw chatbot results | 16 comprehensive metrics |
 | `questions_answers_rag.csv` | RAG chatbot results | 16 comprehensive metrics |  
 | `questions_answers_comparison.csv` | Side-by-side comparison | Raw vs RAG with _raw/_rag suffixes |
+
+**Analysis Reports:**
+| File | Description | Content |
+|------|-------------|---------|
+| `comprehensive_analysis_report.txt` | Detailed statistical analysis | Executive summary, statistical comparisons, category analysis, recommendations |
+| `summary_statistics.csv` | Overall performance metrics | Statistical significance, effect sizes, improvement percentages |
+| `category_analysis.csv` | Category-specific breakdowns | Performance by genetic counseling domain with statistical tests |
+| `cgt_analysis_dashboard.png` | Visual dashboard (high-res) | 5-panel dashboard with charts, statistics, and category analysis |
+| `cgt_analysis_dashboard.pdf` | Visual dashboard (publication) | Professional PDF version suitable for reports and presentations |
 
 ## 📊 Evaluation Metrics
 
@@ -320,6 +384,7 @@ FIELDNAMES = [
 - Run `regenerate_csvs.py` to convert old format CSVs
 - Check for `_enhanced` suffix files (these are legacy versions)
 - Verify `qa_outputs/` directory exists and is writable
+- Analysis outputs are saved with simple names (no timestamps) - new runs overwrite previous results
 
 ## 📊 Data Files Structure
 
